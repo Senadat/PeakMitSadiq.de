@@ -28,7 +28,7 @@ export default function CarouselCard({
           className="object-cover rounded-xl"
         />
       </div>
-      <p className="2xl:text-[48px] text-[18px] md:text-[20px] lg:text-[24px] xl:text-[30px] text-white font-semibold">
+      <p className=" text-[18px] md:text-[20px] lg:text-[24px] xl:text-[30px] text-white font-semibold">
         {cardData.title}
       </p>
       <p className="2xl:text-[24px] text-[10px] sm:text-xs md:text-[16px] lg:text-[18px] xl:text-[20px]">
