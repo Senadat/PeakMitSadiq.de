@@ -1,7 +1,6 @@
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import React, { ReactNode, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { HiX } from "react-icons/hi";
 
 interface ModalProps {
   isOpen: boolean;
