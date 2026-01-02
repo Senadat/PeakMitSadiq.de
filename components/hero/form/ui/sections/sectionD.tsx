@@ -12,9 +12,9 @@ export default function SectionD() {
         formData.d === "Ja, ich will meinen PEAK erreichen!"
           ? "pricing"
           : "contact";
-      const element = document.getElementById(sectionId);
+
       if (!hasCompletedForm) {
-        element?.scrollIntoView({
+        document.getElementById(sectionId)?.scrollIntoView({
           behavior: "smooth",
         });
         setHasCompletedForm(true);
@@ -28,12 +28,34 @@ export default function SectionD() {
   ];
 
   return (
-    <div className="bg-transparent flex flex-col gap-6 justify-center">
-      <p className="font-semibold text-center text-[40px]">
+    <div
+      className="
+        bg-transparent
+        flex flex-col justify-center
+        gap-4 sm:gap-5 lg:gap-6
+      "
+    >
+      {/* Heading */}
+      <p
+        className="
+          font-semibold text-center
+          text-lg
+          sm:text-xl
+          md:text-2xl
+          lg:text-[40px]
+        "
+      >
         Bereit, Ausreden abzulegen und in deinen persönlichen Peak zu
         investieren?
       </p>
-      <div className="flex flex-col items-center justify-center gap-2">
+
+      {/* Options */}
+      <div
+        className="
+          flex flex-col items-center justify-center
+          gap-2 sm:gap-3 lg:gap-2
+        "
+      >
         {options.map((opt) => (
           <CustomInput key={opt} field="d" value={opt} />
         ))}

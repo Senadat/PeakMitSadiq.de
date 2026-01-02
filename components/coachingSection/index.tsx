@@ -11,7 +11,19 @@ export default function Coaching() {
         <br /> Coaching in <br />
         Iserlohn
       </SectionHeading>
-      <p className="text-center mb-6 text-[36px]">
+      <p
+        className="
+    text-center
+    mb-4 sm:mb-5 md:mb-6
+    text-lg       /* mobile */
+    sm:text-xl    /* small tablets */
+    md:text-2xl   /* tablets */
+    lg:text-[36px] /* desktop */
+    leading-relaxed
+    sm:leading-snug
+    md:leading-snug
+  "
+      >
         Nach einem vertraulichen Gespräch über deine Ziele und deinen Werdegang
         <br /> erhältst du einen maßgeschneiderten Trainingsplan. In unseren 1:1
         Sessions im

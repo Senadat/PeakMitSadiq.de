@@ -5,9 +5,33 @@ export default function SectionC() {
   const options: AgeRangeType[] = ["18-25", "20-33", "34-45"];
 
   return (
-    <div className="bg-transparent flex flex-col gap-6">
-      <p className="font-semibold text-center text-[40px]">Wie alt bist du?</p>
-      <div className="flex flex-col items-center justify-center gap-2">
+    <div
+      className="
+        bg-transparent
+        flex flex-col
+        gap-4 sm:gap-5 lg:gap-6
+      "
+    >
+      {/* Heading */}
+      <p
+        className="
+          font-semibold text-center
+          text-xl
+          sm:text-2xl
+          md:text-3xl
+          lg:text-[40px]
+        "
+      >
+        Wie alt bist du?
+      </p>
+
+      {/* Options */}
+      <div
+        className="
+          flex flex-col items-center justify-center
+          gap-2 sm:gap-3 lg:gap-2
+        "
+      >
         {options.map((opt) => (
           <CustomInput key={opt} field="c" value={opt} />
         ))}

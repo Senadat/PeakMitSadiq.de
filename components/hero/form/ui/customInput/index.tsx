@@ -18,17 +18,17 @@ export default function CustomInput({
       tabIndex={0}
       className={`
         group
-        rounded-2xl
-        p-4
-        flex
-        items-center
-        gap-4
+        w-full grow
+        max-w-6xl
+
+        flex items-center
         cursor-pointer
-        transition-all
-        duration-300
-        ease-out
-        w-full
-        min-w-50
+
+        rounded-xl sm:rounded-2xl
+        p-3 sm:p-4 md:p-5
+        gap-3 sm:gap-4 md:gap-5
+
+        transition-all duration-300 ease-out
 
         bg-white/10
         hover:bg-white/15
@@ -36,22 +36,22 @@ export default function CustomInput({
         hover:shadow-lg
 
         ${checked ? "ring-2 ring-primary bg-white/20 scale-[1.02]" : ""}
+
         focus-visible:ring-2
         focus-visible:ring-primary
       `}
     >
-      {/* checkbox */}
+      {/* Checkbox */}
       <div
         className={`
-          w-5 h-5
+          flex items-center justify-center
           rounded-sm
-          border-3
-          border-white!
-          flex
-          items-center
-          justify-center
-          transition-all
-          duration-200
+
+          w-4 h-4
+          sm:w-5 sm:h-5
+
+          border-2
+          transition-all duration-200
 
           ${
             checked
@@ -63,21 +63,23 @@ export default function CustomInput({
         {checked && (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="fill-primary scale-90"
+            className="fill-primary w-3 h-3 sm:w-4 sm:h-4"
             viewBox="0 -960 960 960"
-            width="20"
-            height="20"
           >
             <path d="M400-304 240-464l56-56 104 104 264-264 56 56-320 320Z" />
           </svg>
         )}
       </div>
 
-      {/* value */}
+      {/* Value */}
       <div
         className={`
-        text-[33px]
           transition-colors
+          text-base
+          sm:text-lg
+          md:text-xl
+          lg:text-[33px]
+
           ${checked ? "text-white" : "text-white/80 group-hover:text-white"}
         `}
       >

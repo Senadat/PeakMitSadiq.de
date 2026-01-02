@@ -6,10 +6,12 @@ import PricingSection from "./ui/section";
 import { gymOptions, homeOptions, personalOptions } from "@/lib/data/pricing";
 import { useApp } from "@/context";
 import Link from "next/link";
+import Modal from "../modal";
+import BookingPayment from "./ui/paymentModal";
 
 export default function Pricing() {
   const [tab, setTab] = useState<PricingPlan>("home");
-  const { setOpenPricingModal } = useApp();
+  const { openPricingModal, setOpenPricingModal } = useApp();
 
   const tabOptions = [
     {
@@ -22,7 +24,7 @@ export default function Pricing() {
     },
     {
       tab: "personal",
-      title: "Personal",
+      title: "Einzeltraining",
     },
   ];
 
@@ -90,7 +92,18 @@ export default function Pricing() {
 
       <motion.p
         variants={itemVariants}
-        className="text-center pb-6 text-[36px] text-gray2 max-w-2xl mx-auto mb-6"
+        className="
+        text-gray2 max-w-2xl mx-auto
+    text-center
+    mb-4 sm:mb-5 md:mb-6
+    text-lg       /* mobile */
+    sm:text-xl    /* small tablets */
+    md:text-2xl   /* tablets */
+    lg:text-[36px] /* desktop */
+    leading-relaxed
+    sm:leading-snug
+    md:leading-snug
+  "
       >
         Finde das Paket, das dich stärker, beweglicher oder fitter macht.
         <br />
@@ -109,7 +122,7 @@ export default function Pricing() {
               onClick={() => changeTab(opt.tab as PricingPlan)}
               className={`${
                 tab === opt.tab ? "bg-primary text-white" : "bg-[#C4C4C4]"
-              } px-6 sm:px-10 py-4 relative overflow-hidden text-[24px] transition-colors duration-300`}
+              } px-6 sm:px-10 py-4 relative overflow-hidden text-[18px] md:text-[20px] xl:text-[24px] transition-colors duration-300`}
               whileHover={{
                 scale: 1.05,
                 transition: { duration: 0.2 },
@@ -143,7 +156,7 @@ export default function Pricing() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.3 }}
-              className="text-[24px] text-gray2 text-center"
+              className=" text-[18px] md:text-[20px] xl:text-[24px] text-gray2 text-center"
             >
               *Hausbesuche sind nur im Umkreis von 30 km um Iserlohn möglich.
             </motion.p>
@@ -191,7 +204,7 @@ export default function Pricing() {
 
         <motion.button
           onClick={() => setOpenPricingModal(true)}
-          className="px-8 py-3 bg-primary rounded-lg text-[26px] font-medium text-lg shadow-lg"
+          className="px-8 py-3 bg-primary rounded-lg text-[20px] md:text-[22px] xl:text-[26px] font-medium text-lg shadow-lg"
           whileHover={{
             scale: 1.05,
             boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
@@ -203,7 +216,7 @@ export default function Pricing() {
         </motion.button>
 
         <motion.p
-          className="text-center md:text-left text-[26px]"
+          className="text-center md:text-left text-[20px] md:text-[22px] xl:text-[26px]"
           whileInView={{ opacity: [0, 1], y: [20, 0] }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -218,6 +231,14 @@ export default function Pricing() {
           .
         </motion.p>
       </motion.div>
+
+      <Modal
+        showCloseButton
+        isOpen={openPricingModal}
+        onClose={() => setOpenPricingModal(false)}
+      >
+        <BookingPayment />
+      </Modal>
     </motion.section>
   );
 }

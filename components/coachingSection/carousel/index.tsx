@@ -17,7 +17,7 @@ export default function CoachingCarousel() {
   } = useCarousel();
 
   return (
-    <div className="w-full overflow-hidden border">
+    <div className="w-full overflow-hidden">
       <div
         style={{
           left: `calc(${-cardWidth * 6.24}%)`,
@@ -56,7 +56,7 @@ export default function CoachingCarousel() {
         ))}
       </div>
 
-      <div className="w-full max-w-7xl flex items-center border px-8 gap-8">
+      <div className="w-full max-w-7xl flex items-center px-6 md:px-8 gap-6 md:gap-8">
         <div className="flex items-center justify-center flex-1">
           <CarouselSteps
             totalSteps={items.length / 2}
