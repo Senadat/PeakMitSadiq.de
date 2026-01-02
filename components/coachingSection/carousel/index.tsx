@@ -20,7 +20,7 @@ export default function CoachingCarousel() {
     <div className="w-full overflow-hidden border">
       <div
         style={{
-          left: `calc(${-cardWidth * 7}%)`,
+          left: `calc(${-cardWidth * 6.24}%)`,
           transform: `${
             isTranslating
               ? `translateX(${

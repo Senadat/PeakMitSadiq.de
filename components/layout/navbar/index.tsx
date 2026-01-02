@@ -70,7 +70,7 @@ export default function Navbar() {
           <Logo />
           {/* Desktop Navigation */}
           <nav className="hidden md:flex border">
-            <ul className="flex items-center gap-8">
+            <ul className="flex items-center gap-8 text-[26px]">
               {navOptions.map((option) => (
                 <li key={option.href}>
                   <Link

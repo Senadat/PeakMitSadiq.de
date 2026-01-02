@@ -1,13 +1,15 @@
 "use client";
 
-import CoachingSection from "@/components/coachingSection";
+import Coaching from "@/components/coachingSection";
 import Hero from "@/components/hero";
+import Pricing from "@/components/pricing";
 
 export default function Home() {
   return (
     <div className="">
       <Hero />
-      <CoachingSection />
+      <Coaching />
+      <Pricing />
     </div>
   );
 }

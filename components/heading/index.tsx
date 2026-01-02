@@ -10,15 +10,14 @@ export default function SectionHeading({
   return (
     <div className="relative w-fit p-2 mb-8 md:mb-10 lg:mb-12 mx-auto">
       <h2
-        className={`relative text-center border text-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-tight ${className}`}
+        className={`relative text-center border text-primary text-[200px] font-semibold leading-50 ${className}`}
       >
         {children}
       </h2>
-      <div className="absolute top-0 right-3 ">
+      <div className="absolute top-8 right-3 w-60 h-20 ">
         <Image
           alt="heading decoration"
-          width={100}
-          height={60}
+          fill
           src="/heading-line.svg"
           className=""
         />

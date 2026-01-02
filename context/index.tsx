@@ -69,8 +69,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     ],
   });
 
-  console.table(formData);
-
   // form update logic
   const updateFormField = useCallback(
     (field: keyof HeroFormData, value: string) => {

@@ -1,13 +1,13 @@
 import { PricingPlan } from "@/types/pricing";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import SectionHeading from "../heading";
-import { motion } from "framer-motion";
 import PricingSection from "./ui/section";
 import { gymOptions, homeOptions, personalOptions } from "@/lib/data/pricing";
 import { useApp } from "@/context";
+import Link from "next/link";
 
-export default function pricingSection() {
+export default function Pricing() {
   const [tab, setTab] = useState<PricingPlan>("home");
   const { setOpenPricingModal } = useApp();
 
@@ -22,7 +22,7 @@ export default function pricingSection() {
     },
     {
       tab: "personal",
-      title: "Heim",
+      title: "Personal",
     },
   ];
 
@@ -30,56 +30,194 @@ export default function pricingSection() {
     setTab(t);
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
+  const contentVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      scale: 0.95,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
   return (
-    <section id={"pricing"} className="p-8">
-      <SectionHeading>Dein Weg zum PEAK</SectionHeading>
-      <p className="text-center pb-6 text-gray2">
+    <motion.section
+      id="pricing"
+      className="p-8"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+    >
+      <motion.div variants={itemVariants}>
+        <SectionHeading>
+          Dein Weg zum <br />
+          PEAK
+        </SectionHeading>
+      </motion.div>
+
+      <motion.p
+        variants={itemVariants}
+        className="text-center pb-6 text-[36px] text-gray2 max-w-2xl mx-auto mb-6"
+      >
         Finde das Paket, das dich stärker, beweglicher oder fitter macht.
+        <br />
         Individuell abgestimmt.
-      </p>
+      </motion.p>
 
       {/* tabs */}
-      <div className="flex flex-col items-center justify-center gap-6 mb-6">
-        <motion.div className="cursor-pointer divide-x divide-gray-300 rounded-lg text-sm text-[#252525] flex items-center w-fit mx-auto transition-all">
-          {tabOptions.map((opt) => (
-            <div
+      <motion.div
+        variants={itemVariants}
+        className="flex flex-col items-center justify-center gap-6 mb-10"
+      >
+        <div className="cursor-pointer divide-x divide-gray-300 rounded-lg text-sm text-[#252525] flex items-center w-fit mx-auto overflow-hidden shadow-md">
+          {tabOptions.map((opt, index) => (
+            <motion.div
+              key={opt.tab}
               onClick={() => changeTab(opt.tab as PricingPlan)}
               className={`${
-                tab === opt.tab ? "bg-primary" : "bg-[#C4C4C4]"
-              } hover:bg-primary px-10 py-4`}
+                tab === opt.tab ? "bg-primary text-white" : "bg-[#C4C4C4]"
+              } px-6 sm:px-10 py-4 relative overflow-hidden text-[24px] transition-colors duration-300`}
+              whileHover={{
+                scale: 1.05,
+                transition: { duration: 0.2 },
+              }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
-              {opt.title}
-            </div>
+              <span className="relative z-10">{opt.title}</span>
+              {tab === opt.tab && (
+                <motion.div
+                  layoutId="activeTab"
+                  className="absolute inset-0 bg-primary"
+                  transition={{
+                    type: "spring",
+                    stiffness: 380,
+                    damping: 30,
+                  }}
+                />
+              )}
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {tab === "home" && (
-          <p className="text-xs text-gray2">
-            *Hausbesuche sind nur im Umkreis von 30 km um Iserlohn möglich.
-          </p>
-        )}
-      </div>
+        <AnimatePresence mode="wait">
+          {tab === "home" && (
+            <motion.p
+              key="home-notice"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3 }}
+              className="text-[24px] text-gray2 text-center"
+            >
+              *Hausbesuche sind nur im Umkreis von 30 km um Iserlohn möglich.
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
-      <AnimatePresence>
-        <motion.div>
-          <>{tab === "home" && <PricingSection options={homeOptions} />}</>
-          <>{tab === "gym" && <PricingSection options={gymOptions} />}</>
-          <>
-            {tab === "personal" && <PricingSection options={personalOptions} />}
-          </>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={tab}
+          variants={contentVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="mb-30"
+        >
+          {tab === "home" && (
+            <PricingSection
+              title="Die Sitzungen dauern 1 Stunde 40 Minuten."
+              options={homeOptions}
+            />
+          )}
+          {tab === "gym" && (
+            <PricingSection
+              title="Die Sitzungen dauern 1 Stunde."
+              options={gymOptions}
+            />
+          )}
+          {tab === "personal" && <PricingSection options={personalOptions} />}
         </motion.div>
       </AnimatePresence>
 
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-center text-white">
-        <p className=""></p>
-        <button
+      <motion.div
+        variants={itemVariants}
+        className="flex flex-col md:flex-row gap-6 items-center justify-center text-white mt-12 md:mt-16"
+      >
+        <motion.p
+          className="text-2xl md:text-3xl lg:text-4xl font-semibold text-center md:text-left"
+          whileInView={{ opacity: [0, 1], y: [20, 0] }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          Heute die Reise zum Peak beginnen?
+        </motion.p>
+
+        <motion.button
           onClick={() => setOpenPricingModal(true)}
-          className="p-2 bg-primary"
+          className="px-8 py-3 bg-primary rounded-lg text-[26px] font-medium text-lg shadow-lg"
+          whileHover={{
+            scale: 1.05,
+            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+          }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
         >
           Lass uns loslegen
-        </button>
-        <p className=""></p>
-      </div>
-    </section>
+        </motion.button>
+
+        <motion.p
+          className="text-center md:text-left text-[26px]"
+          whileInView={{ opacity: [0, 1], y: [20, 0] }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          Nicht jetzt?{" "}
+          <Link
+            href="#contact"
+            className="text-primary  hover:underline underline-offset-2 transition-all"
+          >
+            Kontaktieren mich
+          </Link>
+          .
+        </motion.p>
+      </motion.div>
+    </motion.section>
   );
 }

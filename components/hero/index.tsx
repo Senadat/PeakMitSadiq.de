@@ -11,7 +11,7 @@ export default function Hero() {
   return (
     <section
       id="section_1"
-      className="w-full h-screen relative overflow-hidden"
+      className="w-full min-h-screen relative overflow-hidden py-20"
     >
       {/* Background images with fade transition */}
       <AnimatePresence mode="wait">
@@ -33,9 +33,8 @@ export default function Hero() {
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center gap-6">
         <h1
           className="
-            text-center font-extrabold tracking-tight
-            text-3xl sm:text-4xl md:text-5xl
-            lg:text-6xl xl:text-7xl 2xl:text-8xl
+            text-center font-extrabold  tracking-tight
+           text-[180px] leading-40
             text-primary
           "
         >

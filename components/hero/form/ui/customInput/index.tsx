@@ -76,7 +76,7 @@ export default function CustomInput({
       {/* value */}
       <div
         className={`
-          text-sm
+        text-[33px]
           transition-colors
           ${checked ? "text-white" : "text-white/80 group-hover:text-white"}
         `}

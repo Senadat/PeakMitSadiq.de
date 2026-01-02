@@ -10,7 +10,7 @@ export default function SectionA() {
 
   return (
     <div className="bg-transparent flex flex-col items-center gap-6">
-      <p className="font-semibold text-center">
+      <p className="font-semibold text-center text-[40px]">
         Wobei kann ich dich unterstützen?
       </p>
       <div className="flex flex-col items-center justify-center gap-2">

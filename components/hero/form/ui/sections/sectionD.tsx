@@ -29,7 +29,7 @@ export default function SectionD() {
 
   return (
     <div className="bg-transparent flex flex-col gap-6 justify-center">
-      <p className="font-semibold text-center">
+      <p className="font-semibold text-center text-[40px]">
         Bereit, Ausreden abzulegen und in deinen persönlichen Peak zu
         investieren?
       </p>

@@ -6,7 +6,7 @@ export default function SectionB() {
 
   return (
     <div className="bg-transparent flex flex-col gap-6">
-      <p className="font-semibold text-center">Ich bin</p>
+      <p className="font-semibold text-center text-[40px]">Ich bin</p>
       <div className="flex flex-col items-center justify-center gap-2">
         {options.map((opt) => (
           <CustomInput key={opt} field="b" value={opt} />

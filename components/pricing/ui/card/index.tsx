@@ -27,18 +27,22 @@ export default function PricingCard({
         y: -8,
         scale: isCenter ? 1.06 : 1.03,
       }}
-      className={`flex flex-col items-center gap-4 rounded-xl p-6 transition-colors ${
+      className={`flex flex-col items-center gap-4 rounded-xl py-6 px-8 transition-colors ${
         pricing.id === selectedPricing?.id
+          ? "border border-primary ring-2 ring-primary/40"
+          : ""
       } ${
         isCenter
-          ? "md:scale-105 bg-[#EBEBEB] text-[#EBEBEB33] shadow-xl"
+          ? "md:scale-105 bg-[#EBEBEB] text-black shadow-xl"
           : "bg-[#EBEBEB33] text-[#EBEBEB]"
       }`}
     >
-      <p className="text-sm text-primary">{pricing.package}</p>
+      <p className="text-[24px] text-primary text-center mb-4">
+        {pricing.package}
+      </p>
 
       <motion.p
-        className="text-xl"
+        className="text-[64px] font-bold"
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.1 }}
@@ -48,11 +52,11 @@ export default function PricingCard({
 
       <hr className="w-[50%] bg-[#FFFFFF80] h-0.5" />
 
-      <ul className="flex flex-col gap-1">
+      <ul className="flex flex-col gap-1 text-[20px]">
         {pricing.features.map((f, i) => (
           <motion.li
             key={f}
-            className="text-xs"
+            className="text-xs list-disc"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.15 + i * 0.05 }}
@@ -66,7 +70,7 @@ export default function PricingCard({
         onClick={handleClick}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="cursor-pointer w-full max-w-[75%] bg-primary text-white px-4 py-2 rounded-md"
+        className="cursor-pointer truncate w-full text-[26px] max-w-[75%] bg-primary text-white px-4 py-2 rounded-md"
       >
         Jetzt starten!
       </motion.button>
