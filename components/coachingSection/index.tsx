@@ -5,7 +5,7 @@ import { coachingOptions } from "@/lib/data/carousel";
 
 export default function Coaching() {
   return (
-    <section id="section_3" className="py-8 md:py-16">
+    <section id="services" className="py-8 md:py-16">
       <SectionHeading className="">
         Persöhnliches
         <br /> Coaching in <br />
@@ -13,6 +13,7 @@ export default function Coaching() {
       </SectionHeading>
       <p
         className="
+        px-10
     text-center
     mb-4 sm:mb-5 md:mb-6
     text-lg       /* mobile */

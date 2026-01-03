@@ -9,7 +9,7 @@ import { useEffect, useState, useRef } from "react";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("section_1");
+  const [activeSection, setActiveSection] = useState("clients");
   const [showNav, setShowNav] = useState(true);
 
   const lastScrollY = useRef(0);
@@ -28,7 +28,7 @@ export default function Navbar() {
 
       setScrolled(currentScrollY > 50);
 
-      const sections = ["section_1", "section_2", "section_3", "section_4"];
+      const sections = ["about", "clients", "services", "pricing"];
       const current = sections.find((section) => {
         const el = document.getElementById(section);
         if (!el) return false;
@@ -81,7 +81,7 @@ export default function Navbar() {
                   <li key={option.href}>
                     <Link
                       onClick={() => scrollToSection(option.href)}
-                      href={option.href}
+                      href={`/${option.href}`}
                       className={`
                         transition-colors
                         hover:text-primary
@@ -140,7 +140,7 @@ export default function Navbar() {
                     <li key={option.href}>
                       <Link
                         onClick={() => scrollToSection(option.href)}
-                        href={option.href}
+                        href={`/${option.href}`}
                         className={`
                           transition-colors
                           hover:text-primary

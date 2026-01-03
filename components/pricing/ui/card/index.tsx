@@ -27,13 +27,13 @@ export default function PricingCard({
         y: -8,
         scale: isCenter ? 1.06 : 1.03,
       }}
-      className={`flex flex-col items-center gap-4 rounded-xl py-4 px-6 md:py-6 md:px-8 transition-colors ${
+      className={`flex flex-col items-center gap-4 rounded-xl max-w-[360px] py-4 px-6 md:py-6 md:px-8 transition-colors ${
         pricing.id === selectedPricing?.id
           ? "border border-primary ring-2 ring-primary/40"
           : ""
       } ${
         isCenter
-          ? "md:scale-105 bg-[#EBEBEB] text-black shadow-xl"
+          ? "md:scale-110 bg-[#EBEBEB] text-black shadow-xl"
           : "bg-[#EBEBEB33] text-[#EBEBEB]"
       }`}
     >

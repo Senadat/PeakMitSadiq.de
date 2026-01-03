@@ -132,7 +132,7 @@ export default function Pricing() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <span className="relative z-10">{opt.title}</span>
+              <span className="relative z-10 truncate">{opt.title}</span>
               {tab === opt.tab && (
                 <motion.div
                   layoutId="activeTab"
@@ -185,13 +185,15 @@ export default function Pricing() {
               options={gymOptions}
             />
           )}
-          {tab === "personal" && <PricingSection options={personalOptions} />}
+          {tab === "personal" && (
+            <PricingSection options={personalOptions} showCenter={false} />
+          )}
         </motion.div>
       </AnimatePresence>
 
       <motion.div
         variants={itemVariants}
-        className="flex flex-col md:flex-row gap-6 items-center justify-center text-white mt-12 md:mt-16"
+        className="flex flex-col lg:flex-row gap-3 xl:gap-6 items-center justify-center text-white mt-12 md:mt-16"
       >
         <motion.p
           className="text-2xl md:text-3xl lg:text-4xl font-semibold text-center md:text-left"
@@ -204,7 +206,7 @@ export default function Pricing() {
 
         <motion.button
           onClick={() => setOpenPricingModal(true)}
-          className="px-8 py-3 bg-primary rounded-lg text-[20px] md:text-[22px] xl:text-[26px] font-medium text-lg shadow-lg"
+          className="px-8 py-3 bg-primary  w-fit rounded-lg text-[20px] md:text-[22px] xl:text-[26px] font-medium text-lg shadow-lg"
           whileHover={{
             scale: 1.05,
             boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",

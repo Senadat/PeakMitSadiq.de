@@ -5,7 +5,7 @@ export default function CarouselControls() {
   const { next, prev } = useCarousel();
 
   return (
-    <div className="flex justify-center items-center gap-4">
+    <div className="flex justify-center items-center gap-4 py-2">
       <Button isLeft onClick={next} />
       <Button onClick={prev} />
     </div>

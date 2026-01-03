@@ -105,7 +105,7 @@ export default function Footer() {
               <p className="text-center">
                 Website erstellt von{" "}
                 <a
-                  href="#"
+                  href="https://senadat.de/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-bold text-primary hover:text-primary/80 transition-colors duration-300"

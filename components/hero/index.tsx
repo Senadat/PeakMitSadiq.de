@@ -11,7 +11,7 @@ export default function Hero() {
   return (
     <section
       id="section_1"
-      className="w-full min-h-screen relative overflow-hidden lg:py-20"
+      className="w-full min-h-screen relative overflow-hidden md:py-10 lg:py-20"
     >
       {/* Background images with fade transition */}
       <AnimatePresence mode="wait">
