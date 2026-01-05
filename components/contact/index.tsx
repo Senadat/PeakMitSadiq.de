@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-
+import SectionHeading from "../heading";
+import sendIcon from "../../public/send.png";
 export default function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -42,14 +43,7 @@ export default function Contact() {
   return (
     <section id="contact">
       <div>
-        <h1
-          className="text-primary 
-          text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl 
-          font-extrabold text-center my-20 
-          w-full md:w-3/4 mx-auto px-4"
-        >
-          Kontaktiere mich
-        </h1>
+        <SectionHeading>Kontaktiere mich</SectionHeading>
 
         <div
           className="w-full md:w-3/4 xl:w-2/4 mx-auto 
@@ -102,7 +96,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-3 rounded-md text-white font-semibold transition
+                className={`w-full py-3 rounded-md text-white font-semibold transition flex items-center justify-center gap-2
                   ${
                     loading
                       ? "bg-gray-500 cursor-not-allowed"
@@ -110,6 +104,7 @@ export default function Contact() {
                   }`}
               >
                 {loading ? "Senden..." : "Senden"}
+                <Image src={sendIcon} alt="send icon" className="w-8" />
               </button>
 
               {success && (

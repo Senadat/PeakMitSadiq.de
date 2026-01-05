@@ -1,17 +1,9 @@
+import SectionHeading from "@/components/heading";
 export default function LegalPage() {
   return (
     <div className="w-full md:w-4/5 xl:w-3/4 mx-auto px-4 py-8">
       {/* Page Title */}
-      <h1
-        className="
-          text-primary
-          text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl
-          font-extrabold text-center my-20
-          w-full md:w-3/4 mx-auto
-        "
-      >
-        Impressum
-      </h1>
+      <SectionHeading className="py-10">Impressum</SectionHeading>
 
       {/* Content */}
       <div className="space-y-8">

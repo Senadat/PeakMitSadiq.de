@@ -1,5 +1,5 @@
 "use client";
-
+import SectionHeading from "../heading";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -27,14 +27,8 @@ const aboutSections = [
 export default function About() {
   return (
     <section id="about">
-      <div className="w-full md:w-3/4 xl:w-2/4 mx-auto px-4">
-        <h1
-          className="text-primary 
-          text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl 
-          font-extrabold text-center my-12"
-        >
-          Was dich erwartet
-        </h1>
+      <div className="w-full md:w-4/4 xl:w-3/4 mx-auto px-4">
+        <SectionHeading>Was dich erwartet</SectionHeading>
 
         {aboutSections.map((section, index) => (
           <motion.div
@@ -53,32 +47,33 @@ export default function About() {
                 relative
                 w-full
                 sm:w-2/3
-                md:w-1/2
-                xl:w-[420px]
+                md:w-700
+                xl:w2/3
                 aspect-[4/5]
+                
               "
             >
               <Image
                 src={section.img}
                 alt={section.alt}
                 fill
-                className="object-cover rounded-lg"
+                className="object-cover rounded-lg "
                 sizes="(max-width: 768px) 100vw, 420px"
               />
             </div>
 
             <p
               className="
-    w-full md:w-3/4
-    text-center md:text-left
-
-    first-letter:text-4xl
-    sm:first-letter:text-5xl
-    lg:first-letter:text-6xl
-
-    first-letter:font-semibold
-    first-letter:leading-none
-    first-letter:mr-1
+        px-10
+    text-center
+    mb-4 sm:mb-5 md:mb-6
+    text-lg      
+    sm:text-xl   
+    md:text-2xl  
+    lg:text-[36px] 
+    leading-relaxed
+    sm:leading-snug
+    md:leading-snug
   "
             >
               {section.text}
