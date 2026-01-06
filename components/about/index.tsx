@@ -29,7 +29,8 @@ export default function About() {
     <section id="about">
       <div className="w-full  mx-auto px-4">
         <SectionHeading showDecoration={false}>
-          Was dich erwartet
+          Was dich <br />
+          erwartet
         </SectionHeading>
 
         {aboutSections.map((section, index) => (

@@ -25,7 +25,7 @@ export default function CustomInput({
         cursor-pointer
 
         rounded-xl sm:rounded-2xl
-        p-3 sm:p-4 md:p-5
+        px-3 sm:px-4 md:px-5 py-2
         gap-3 sm:gap-4 md:gap-5
 
         transition-all duration-300 ease-out
@@ -35,7 +35,7 @@ export default function CustomInput({
         hover:-translate-y-0.5
         hover:shadow-lg
 
-        ${checked ? "ring-2 ring-primary bg-white/20 scale-[1.02]" : ""}
+        ${checked ? "ring-2 ring-primary bg-[#D9D9D933] scale-[1.02]" : ""}
 
         focus-visible:ring-2
         focus-visible:ring-primary
@@ -49,14 +49,14 @@ export default function CustomInput({
 
           w-4 h-4
           sm:w-5 sm:h-5
-
-          border-2
+          md:w-6 md:h-6
+          border-4
           transition-all duration-200
 
           ${
             checked
               ? "border-primary bg-primary/10"
-              : "border-white/40 group-hover:border-primary"
+              : "border-[#FFFFFFE5] group-hover:border-primary"
           }
         `}
       >
@@ -73,6 +73,9 @@ export default function CustomInput({
 
       {/* Value */}
       <div
+        style={{
+          fontSize: "clamp(16px, 1.8vw, 33px)",
+        }}
         className={`
           transition-colors
           text-base
@@ -80,7 +83,7 @@ export default function CustomInput({
           md:text-xl
           lg:text-[33px]
 
-          ${checked ? "text-white" : "text-white/80 group-hover:text-white"}
+          ${checked ? "text-white" : "text-[#B9B9B9] group-hover:text-white"}
         `}
       >
         {value}

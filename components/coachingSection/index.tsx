@@ -18,7 +18,7 @@ export default function Coaching() {
         className="
         px-10
     text-center
-    mb-4 sm:mb-5 md:mb-6
+    mb-4 sm:mb-5 md:mb-10
   "
       >
         Nach einem vertraulichen Gespräch über deine Ziele und deinen Werdegang
@@ -34,7 +34,7 @@ export default function Coaching() {
         <CarouselProvider
           length={coachingOptions.length}
           cardGap={1}
-          cardWidth={20}
+          cardWidth={15}
         >
           <CoachingCarousel />
         </CarouselProvider>

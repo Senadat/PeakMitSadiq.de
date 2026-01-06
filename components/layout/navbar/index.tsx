@@ -52,37 +52,40 @@ export default function Navbar() {
 
   return (
     <AnimatePresence>
-      {showNav && (
-        <motion.header
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          exit={{ y: -100 }}
-          transition={{ type: "spring", stiffness: 100, damping: 20 }}
-          className={`
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        exit={{ y: -100 }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className={`
             fixed top-0 left-0 z-50 w-full
-            ${scrolled ? "bg-black/80 backdrop-blur-sm" : "bg-transparent"}
+            ${
+              scrolled
+                ? "bg-black/80 backdrop-blur-sm"
+                : "bg-transparent hidden"
+            }
             transition-all
           `}
-        >
-          <div
-            className="
+      >
+        <div
+          className="
               flex items-center justify-between
               h-20 sm:h-22 md:h-26
               px-4 sm:px-6 lg:px-8
             "
-          >
-            {/* Logo */}
-            <Logo />
+        >
+          {/* Logo */}
+          <Logo />
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex">
-              <ul className="flex items-center gap-6 lg:gap-8 text-base lg:text-lg xl:text-[26px]">
-                {navOptions.map((option) => (
-                  <li key={option.href}>
-                    <Link
-                      onClick={() => scrollToSection(option.href)}
-                      href={`/${option.href}`}
-                      className={`
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex">
+            <ul className="flex items-center gap-6 lg:gap-8 text-base lg:text-lg xl:text-xl">
+              {navOptions.map((option) => (
+                <li key={option.href}>
+                  <Link
+                    onClick={() => scrollToSection(option.href)}
+                    href={`/${option.href}`}
+                    className={`
                         transition-colors
                         hover:text-primary
                         ${
@@ -91,57 +94,57 @@ export default function Navbar() {
                             : "text-white"
                         }
                       `}
-                    >
-                      {option.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+                  >
+                    {option.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-md focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 -960 960 960"
-                  className="w-6 h-6 fill-white"
-                >
-                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 -960 960 960"
-                  className="w-6 h-6 fill-white"
-                >
-                  <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-                </svg>
-              )}
-            </button>
-          </div>
-
-          {/* Mobile Menu */}
-          <AnimatePresence>
-            {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.25 }}
-                className="md:hidden bg-black/90 backdrop-blur-md"
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-md focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960"
+                className="w-6 h-6 fill-white"
               >
-                <ul className="flex flex-col items-center gap-4 py-6 text-base">
-                  {navOptions.map((option) => (
-                    <li key={option.href}>
-                      <Link
-                        onClick={() => scrollToSection(option.href)}
-                        href={`/${option.href}`}
-                        className={`
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960"
+                className="w-6 h-6 fill-white"
+              >
+                <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.25 }}
+              className="md:hidden bg-black/90 backdrop-blur-md"
+            >
+              <ul className="flex flex-col items-center gap-4 py-6 text-base">
+                {navOptions.map((option) => (
+                  <li key={option.href}>
+                    <Link
+                      onClick={() => scrollToSection(option.href)}
+                      href={`/${option.href}`}
+                      className={`
                           transition-colors
                           hover:text-primary
                           ${
@@ -150,17 +153,16 @@ export default function Navbar() {
                               : "text-white"
                           }
                         `}
-                      >
-                        {option.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.header>
-      )}
+                    >
+                      {option.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.header>
     </AnimatePresence>
   );
 }

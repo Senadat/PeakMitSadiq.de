@@ -17,7 +17,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "PeakMitSadiq",
-  description: "Page description will go here..",
+  description:
+    "Personal Training – Gewichtsverlies, Spieropbouw & Topprestaties",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

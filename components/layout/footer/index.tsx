@@ -6,11 +6,11 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const socials = [
-    {
-      title: "facebook",
-      icon: <Image src={"/facebook.svg"} alt="facebook icon" fill />,
-      link: `#`,
-    },
+    // {
+    //   title: "facebook",
+    //   icon: <Image src={"/facebook.svg"} alt="facebook icon" fill />,
+    //   link: `#`,
+    // },
     {
       title: "instagram",
       icon: <Image src={"/instagram.svg"} alt="instagram icon" fill />,
@@ -21,11 +21,11 @@ export default function Footer() {
       icon: <Image src={"/whatsapp.svg"} alt="whatsapp icon" fill />,
       link: `https://api.whatsapp.com/send?phone=6777485799`,
     },
-    {
-      title: "x",
-      icon: <Image src={"/twitter.svg"} alt="x icon" fill />,
-      link: `#`,
-    },
+    // {
+    //   title: "x",
+    //   icon: <Image src={"/twitter.svg"} alt="x icon" fill />,
+    //   link: `#`,
+    // },
   ];
 
   return (

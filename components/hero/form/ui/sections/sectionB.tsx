@@ -14,12 +14,12 @@ export default function SectionB() {
     >
       {/* Heading */}
       <p
+        style={{
+          fontSize: "clamp(18px, 2vw, 40px)",
+        }}
         className="
           font-semibold text-center
-          text-xl
-          sm:text-2xl
-          md:text-3xl
-          lg:text-[40px]
+       
         "
       >
         Ich bin

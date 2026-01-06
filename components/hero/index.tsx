@@ -8,7 +8,7 @@ export default function Hero() {
   const { currentHeroImage, hasCompletedForm } = useApp();
 
   return (
-    <div className="w-full min-h-screen relative overflow-hidden md:py-10 lg:py-20">
+    <div className="w-full min-h-screen relative overflow-hidden ">
       {/* Background images with fade transition */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -23,21 +23,17 @@ export default function Hero() {
       </AnimatePresence>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/80" />
+      <div className="absolute inset-0 bg-black/70" />
 
       {/* Content */}
       <div className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center gap-6 px-4 text-center">
         <h1
+          style={{
+            fontSize: "12vw",
+          }}
           className="
             font-extrabold tracking-tight text-primary
             leading-[0.95]
-
-            text-[48px]
-            sm:text-[64px]
-            md:text-[96px]
-            lg:text-[128px]
-            xl:text-[160px]
-            2xl:text-[180px]
           "
         >
           Erreiche Mit

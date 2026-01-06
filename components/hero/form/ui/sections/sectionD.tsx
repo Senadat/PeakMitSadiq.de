@@ -1,11 +1,7 @@
 import { CommitmentType } from "@/types/hero";
 import CustomInput from "../customInput";
-import { useApp } from "@/context";
-import { useEffect } from "react";
 
 export default function SectionD() {
-  const { formData, hasCompletedForm, setHasCompletedForm } = useApp();
-
   const options: CommitmentType[] = [
     "Ja, ich will meinen PEAK erreichen!",
     "Nein, ich bin aktuell noch nicht bereit",
@@ -21,12 +17,12 @@ export default function SectionD() {
     >
       {/* Heading */}
       <p
+        style={{
+          fontSize: "clamp(18px, 2vw, 40px)",
+        }}
         className="
           font-semibold text-center
-          text-lg
-          sm:text-xl
-          md:text-2xl
-          lg:text-[40px]
+          
         "
       >
         Bereit, Ausreden abzulegen und in deinen persönlichen Peak zu

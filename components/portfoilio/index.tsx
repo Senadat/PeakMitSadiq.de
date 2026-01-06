@@ -58,7 +58,12 @@ export default function Portfolio() {
           {portfolioData.map((item, i) => (
             <motion.div
               key={i}
-              className="flex flex-col items-center gap-6 md:gap-8 w-full max-w-md mx-auto lg:mx-0"
+              className="
+    w-full max-w-md mx-auto lg:mx-0
+    flex flex-col
+    md:grid md:grid-cols-2 md:gap-6
+    lg:flex lg:flex-col lg:gap-6
+  "
               initial={{
                 opacity: 0,
                 x: i === 0 ? -50 : i === 2 ? 50 : 0,

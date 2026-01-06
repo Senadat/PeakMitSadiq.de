@@ -20,7 +20,7 @@ export default function CarouselCard({
       }}
       className="p-2 pb-4 rounded-xl flex-none space-y-3 md:space-y-4 text-center bg-primary"
     >
-      <div className="w-full h-[200px] md:h-[250px] lg:h-[300px] relative rounded-xl">
+      <div className="w-full h-50 md:h-62.5 lg:h-75 relative rounded-xl">
         <Image
           src={cardData.image}
           fill
@@ -30,7 +30,7 @@ export default function CarouselCard({
       </div>
       <p
         style={{
-          fontSize: "clamp(16px, 2vw, 30px)",
+          fontSize: "clamp(16px, 1.8vw, 24px)",
         }}
         className=" text-white font-semibold"
       >
