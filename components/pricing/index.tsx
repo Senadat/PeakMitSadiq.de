@@ -91,18 +91,15 @@ export default function Pricing() {
       </motion.div>
 
       <motion.p
+        style={{
+          fontSize: "clamp(18px, 2vw, 36px)",
+        }}
         variants={itemVariants}
         className="
         text-gray2 max-w-2xl mx-auto
     text-center
     mb-4 sm:mb-5 md:mb-6
-    text-lg       /* mobile */
-    sm:text-xl    /* small tablets */
-    md:text-2xl   /* tablets */
-    lg:text-[36px] /* desktop */
-    leading-relaxed
-    sm:leading-snug
-    md:leading-snug
+  
   "
       >
         Finde das Paket, das dich stärker, beweglicher oder fitter macht.
@@ -228,7 +225,7 @@ export default function Pricing() {
             href="#contact"
             className="text-primary  hover:underline underline-offset-2 transition-all"
           >
-            Kontaktieren mich
+            Kontaktiere mich
           </Link>
           .
         </motion.p>

@@ -12,17 +12,13 @@ export default function Coaching() {
         Iserlohn
       </SectionHeading>
       <p
+        style={{
+          fontSize: "clamp(18px, 2vw, 36px)",
+        }}
         className="
         px-10
     text-center
     mb-4 sm:mb-5 md:mb-6
-    text-lg       /* mobile */
-    sm:text-xl    /* small tablets */
-    md:text-2xl   /* tablets */
-    lg:text-[36px] /* desktop */
-    leading-relaxed
-    sm:leading-snug
-    md:leading-snug
   "
       >
         Nach einem vertraulichen Gespräch über deine Ziele und deinen Werdegang
@@ -38,7 +34,7 @@ export default function Coaching() {
         <CarouselProvider
           length={coachingOptions.length}
           cardGap={1}
-          cardWidth={25}
+          cardWidth={20}
         >
           <CoachingCarousel />
         </CarouselProvider>

@@ -8,6 +8,7 @@ import {
   useState,
   useCallback,
   ReactNode,
+  useEffect,
 } from "react";
 
 export type SectionId = string;
@@ -58,6 +59,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     price: 1500,
     package: "Peak Muscle Gain Home",
     plan: "home",
+    duration: 60,
     features: [
       "2× pro Woche Personal Training (60 Min.) im PT-Studio",
       "Muskelaufbau-orientierter Trainingsplan",
@@ -85,6 +87,48 @@ export function AppProvider({ children }: { children: ReactNode }) {
     },
     [backgroundImages]
   );
+
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch(process.env.NEXT_PUBLIC_SHEET_ENDPOINT!, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+
+        body: JSON.stringify({
+          ...formData,
+          token: process.env.NEXT_PUBLIC_FORM_TOKEN,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        throw new Error("Submission failed");
+      }
+
+      // success UX
+      console.log("Saved to sheet");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    if (formData.d !== "") {
+      const sectionId =
+        formData.d === "Ja, ich will meinen PEAK erreichen!"
+          ? "pricing"
+          : "contact";
+
+      if (!hasCompletedForm) {
+        document.getElementById(sectionId)?.scrollIntoView({
+          behavior: "smooth",
+        });
+        handleSubmit();
+        setHasCompletedForm(true);
+      }
+    }
+  }, [formData]);
 
   return (
     <AppContext.Provider

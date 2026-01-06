@@ -11,6 +11,10 @@ export default function Steps() {
   ];
 
   const handleClick = (value: number) => {
+    if (value > currentFormIndex) {
+      // const formattedForm = Object.values(formData);
+      return;
+    }
     setCurrentHeroImage(backgroundImages[value]);
     setCurrentFormIndex(value);
   };

@@ -27,17 +27,17 @@ export default function PricingCard({
         y: -8,
         scale: isCenter ? 1.06 : 1.03,
       }}
-      className={`flex flex-col items-center gap-4 rounded-xl max-w-[360px] py-4 px-6 md:py-6 md:px-8 transition-colors ${
+      className={`flex flex-col items-center gap-4 rounded-xl max-w-90 py-4 px-6 md:py-6 md:px-8 transition-colors ${
         pricing.id === selectedPricing?.id
           ? "border border-primary ring-2 ring-primary/40"
           : ""
       } ${
         isCenter
-          ? "md:scale-110 bg-[#EBEBEB] text-black shadow-xl"
+          ? " bg-[#EBEBEB] text-black shadow-xl"
           : "bg-[#EBEBEB33] text-[#EBEBEB]"
       }`}
     >
-      <p className="text-[18px] md:text-[20px] xl:text-[24px] text-primary text-center">
+      <p className="whitespace-pre-line  text-[18px] md:text-[20px] xl:text-[24px] text-primary text-center">
         {pricing.package}
       </p>
 
@@ -52,11 +52,11 @@ export default function PricingCard({
 
       <hr className="w-[50%] bg-[#FFFFFF80] h-0.5" />
 
-      <ul className="flex flex-col gap-1 text-[14px] md:text-[16px] lg:text-[20px]">
+      <ul className="flex flex-col gap-1 md:text-lg lg:text-xl">
         {pricing.features.map((f, i) => (
           <motion.li
             key={f}
-            className="text-xs list-disc"
+            className=" list-disc"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.15 + i * 0.05 }}

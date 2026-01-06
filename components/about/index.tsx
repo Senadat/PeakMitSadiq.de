@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import SectionHeading from "../heading";
 
 const aboutSections = [
   {
@@ -27,14 +28,10 @@ const aboutSections = [
 export default function About() {
   return (
     <section id="about">
-      <div className="w-full md:w-3/4 xl:w-2/4 mx-auto px-4">
-        <h1
-          className="text-primary 
-          text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl 
-          font-extrabold text-center my-12"
-        >
+      <div className="w-full  mx-auto px-4">
+        <SectionHeading showDecoration={false}>
           Was dich erwartet
-        </h1>
+        </SectionHeading>
 
         {aboutSections.map((section, index) => (
           <motion.div
@@ -54,8 +51,8 @@ export default function About() {
                 w-full
                 sm:w-2/3
                 md:w-1/2
-                xl:w-[420px]
-                aspect-[4/5]
+                xl:w-105
+                aspect-4/5
               "
             >
               <Image
@@ -68,8 +65,11 @@ export default function About() {
             </div>
 
             <p
+              style={{
+                fontSize: "clamp(18px, 2vw, 36px)",
+              }}
               className="
-    w-full md:w-3/4
+    w-full md:w-1/2
     text-center md:text-left
 
     first-letter:text-4xl
@@ -79,6 +79,8 @@ export default function About() {
     first-letter:font-semibold
     first-letter:leading-none
     first-letter:mr-1
+        px-10
+  
   "
             >
               {section.text}

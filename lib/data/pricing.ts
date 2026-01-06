@@ -15,12 +15,14 @@ export const homeOptions: PricingCardType[] = [
       "WhatsApp-Support",
       "Abschlussanalyse",
     ],
+    duration: 60,
   },
   {
     id: "home-pain-free",
     price: 1500,
     package: "PeakPainFree Home",
     plan: "home",
+    duration: 60,
     features: [
       "2× pro Woche Personal Training (60 Min.) bei dir zuhause oder outdoor",
       "Anfahrt innerhalb 30 km inklusive",
@@ -33,6 +35,7 @@ export const homeOptions: PricingCardType[] = [
       "Abschlussanalyse",
     ],
   },
+
   {
     id: "home-weight-loss",
     price: 1500,
@@ -49,6 +52,7 @@ export const homeOptions: PricingCardType[] = [
       "WhatsApp-Support",
       "Abschlussanalyse",
     ],
+    duration: 60,
   },
 ];
 
@@ -58,6 +62,7 @@ export const gymOptions: PricingCardType[] = [
     price: 1700,
     package: "Peak Muscle Gain Gym",
     plan: "gym",
+    duration: 60,
     features: [
       "2× pro Woche Personal Training (60 Min.) im PT-Studio",
       "Muskelaufbau-orientierter Trainingsplan",
@@ -73,6 +78,7 @@ export const gymOptions: PricingCardType[] = [
     price: 1700,
     package: "PeakPainFree Gym",
     plan: "gym",
+    duration: 60,
     features: [
       "2× pro Woche Personal Training (60 Min.) im PT-Studio",
       "Individueller Trainingsplan",
@@ -88,6 +94,7 @@ export const gymOptions: PricingCardType[] = [
     price: 1700,
     package: "Peak Weight Loss Gym",
     plan: "gym",
+    duration: 60,
     features: [
       "2×/Woche Personal Training (60 Min.) im PT-Studio",
       "Fettabbau-orientierter Trainingsplan",
@@ -104,8 +111,11 @@ export const personalOptions: PricingCardType[] = [
   {
     id: "personal-gym-60",
     price: 71.4,
-    package: "1:1 Personal Training Studio (60 Minuten)",
+    package: `1:1 Personal Training
+Studio
+(60 Minuten)`,
     plan: "personal",
+    duration: 60,
     features: [
       "60 Min gezieltes Training im PT-Studio",
       "Individueller Trainingsplan",
@@ -115,8 +125,11 @@ export const personalOptions: PricingCardType[] = [
   {
     id: "personal-home-60",
     price: 99,
-    package: "1:1 Personal Training Zuhause / Outdoor (60 Minuten)",
+    package: `1:1 Personal Training
+Zuhause / Outdoor
+(60 Minuten)`,
     plan: "personal",
+    duration: 60,
     features: [
       "60 Min Training bei dir zuhause / outdoor (bis 30 km Anfahrt)",
       "Individueller Trainingsplan",
@@ -126,8 +139,11 @@ export const personalOptions: PricingCardType[] = [
   {
     id: "personal-gym-30",
     price: 41.65,
-    package: "1:1 Personal Training Studio (30 Minuten)",
+    package: `1:1 Personal Training
+Studio
+(30 Minuten)`,
     plan: "personal",
+    duration: 30,
     features: [
       "30 Min intensives Training im PT-Studio",
       "Individueller Trainingsplan",
@@ -137,8 +153,11 @@ export const personalOptions: PricingCardType[] = [
   {
     id: "personal-home-30",
     price: 49,
-    package: "1:1 Personal Training Zuhause / Outdoor (30 Minuten)",
+    package: `1:1 Personal Training
+Zuhause / Outdoor
+(30 Minuten)`,
     plan: "personal",
+    duration: 30,
     features: [
       "30 Min Training bei dir zuhause / outdoor (bis 30 km Anfahrt)",
       "Individueller Trainingsplan",

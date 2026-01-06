@@ -13,3 +13,28 @@ body {
 button {
   cursor: pointer;
 }
+
+section {
+  padding: 200px 40px;
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+  section {
+    padding: 140px 32px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  section {
+    padding: 100px 20px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  section {
+    padding: 80px 16px;
+  }
+}

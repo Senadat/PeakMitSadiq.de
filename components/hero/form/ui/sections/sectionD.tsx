@@ -6,22 +6,6 @@ import { useEffect } from "react";
 export default function SectionD() {
   const { formData, hasCompletedForm, setHasCompletedForm } = useApp();
 
-  useEffect(() => {
-    if (formData.d !== "") {
-      const sectionId =
-        formData.d === "Ja, ich will meinen PEAK erreichen!"
-          ? "pricing"
-          : "contact";
-
-      if (!hasCompletedForm) {
-        document.getElementById(sectionId)?.scrollIntoView({
-          behavior: "smooth",
-        });
-        setHasCompletedForm(true);
-      }
-    }
-  }, [formData]);
-
   const options: CommitmentType[] = [
     "Ja, ich will meinen PEAK erreichen!",
     "Nein, ich bin aktuell noch nicht bereit",

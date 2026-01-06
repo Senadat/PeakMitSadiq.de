@@ -3,18 +3,11 @@
 import { useState } from "react";
 import { useApp } from "@/context";
 import Image from "next/image";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PopupModal } from "react-calendly";
 import FormInput from "@/components/input";
 
-type WeekTab = "week1" | "week2";
-
 interface BookingData {
-  week1Date?: Date;
-  week1Time?: string;
-  week2Date?: Date;
-  week2Time?: string;
   name: string;
   phone: string;
   email: string;
@@ -23,8 +16,7 @@ interface BookingData {
 }
 
 export default function BookingPayment() {
-  const { selectedPricing } = useApp();
-  const [activeWeek, setActiveWeek] = useState<WeekTab>("week1");
+  const { selectedPricing, setOpenPricingModal } = useApp();
   const [bookingData, setBookingData] = useState<BookingData>({
     name: "",
     phone: "",
@@ -35,20 +27,8 @@ export default function BookingPayment() {
 
   const [locationError, setLocationError] = useState("");
   const [isValidatingLocation, setIsValidatingLocation] = useState(false);
-
-  // Available time slots
-  const timeSlots = [
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00",
-  ];
+  const [showCalendly, setShowCalendly] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState<any>(null);
 
   // Haversine formula for distance calculation
   const calculateDistance = (
@@ -72,6 +52,10 @@ export default function BookingPayment() {
 
   // Validate location using free Nominatim API (OpenStreetMap)
   const validateLocation = async (address: string): Promise<boolean> => {
+    if (selectedPricing && selectedPricing?.plan !== "home") {
+      true;
+    }
+
     setIsValidatingLocation(true);
     const iserlohnLat = 51.3761;
     const iserlohnLon = 7.7006;
@@ -80,10 +64,11 @@ export default function BookingPayment() {
       // Add delay to respect Nominatim usage policy (1 request per second)
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
+      // Try searching with the exact address first
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          address + ", Germany"
-        )}&limit=1`,
+          address
+        )}&limit=1&countrycodes=de`,
         {
           headers: {
             "User-Agent": "PeakMitSadiq-Booking-App",
@@ -103,6 +88,14 @@ export default function BookingPayment() {
           userLon
         );
 
+        console.log(
+          "Found location:",
+          data[0].display_name,
+          "Distance:",
+          distance.toFixed(1),
+          "km"
+        );
+
         if (distance > 30) {
           setLocationError(
             `Standort ist ${distance.toFixed(
@@ -116,7 +109,9 @@ export default function BookingPayment() {
         setIsValidatingLocation(false);
         return true;
       } else {
-        setLocationError("Standort konnte nicht gefunden werden.");
+        setLocationError(
+          "Standort konnte nicht gefunden werden. Bitte vollständige Adresse eingeben."
+        );
         setIsValidatingLocation(false);
         return false;
       }
@@ -134,132 +129,98 @@ export default function BookingPayment() {
     }
   };
 
-  const handleDateSelect = (date: Date) => {
-    if (activeWeek === "week1") {
-      setBookingData({ ...bookingData, week1Date: date });
-    } else {
-      setBookingData({ ...bookingData, week2Date: date });
-    }
-  };
+  function generatePaymentRef() {
+    return `PMT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+  }
 
-  const handleTimeSelect = (time: string) => {
-    if (activeWeek === "week1") {
-      setBookingData({ ...bookingData, week1Time: time });
-    } else {
-      setBookingData({ ...bookingData, week2Time: time });
-    }
-  };
+  const paymentRef = generatePaymentRef();
 
   const isFormValid =
     bookingData.name &&
     bookingData.phone &&
     bookingData.email &&
     bookingData.location &&
-    bookingData.week1Date &&
-    bookingData.week1Time &&
     !locationError &&
     !isValidatingLocation;
 
-  const getCurrentSelectedTime = () => {
-    return activeWeek === "week1"
-      ? bookingData.week1Time
-      : bookingData.week2Time;
-  };
-
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-y-auto bg-background">
-      {/* Section 1: Booking Calendar */}
+      {/* Section 1: Package Info */}
       <div className="flex-1 p-6 md:p-8 lg:p-10 overflow-y-auto">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-3">
           Möchtest du direkt einen Termin buchen?
         </h2>
-        <p className=" mb-8 text-sm md:text-base text-white">
-          Trage dich jetzt in meinen Kalender ein. Wähle einfach den passenden
-          Zeitpunkt und wir starten dein Training
+        <p className="mb-8 text-sm md:text-base text-white">
+          Zahle jetzt sicher über PayPal und buche anschließend deinen
+          Wunschtermin direkt in meinem Kalender.
         </p>
 
-        {/* Week Tabs */}
-        <div className="flex gap-6 mb-6 justify-start">
-          <button
-            onClick={() => setActiveWeek("week1")}
-            className={`font-medium transition-all ${
-              activeWeek === "week1"
-                ? "text-primary underline underline-offset-1s"
-                : " text-white/50 hover:text-primary"
-            }`}
-          >
-            <span className="">Woche 1</span>
-            {/* {bookingData.week1Date && (
-              <span className="text-xs opacity-90">
-                {bookingData.week1Date.toLocaleDateString("de-DE")} •{" "}
-                {bookingData.week1Time}
+        {/* Package Details */}
+        <div className="bg-[#3B3B3B] rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-bold text-primary mb-4">
+            Dein ausgewähltes Paket:
+          </h3>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-white">Paket:</span>
+              <span className="font-semibold text-white">
+                {selectedPricing?.package}
               </span>
-            )} */}
-          </button>
-          <button
-            onClick={() => setActiveWeek("week2")}
-            className={` font-medium transition-all `}
-          >
-            <span className="flex items-center gap-1">
-              <span
-                className={`${
-                  activeWeek === "week2"
-                    ? "text-primary underline underline-offset-1  shadow-md"
-                    : " text-white/50 hover:text-primary"
-                }`}
-              >
-                Woche 2
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-white">Plan:</span>
+              <span className="font-semibold text-white">
+                {selectedPricing?.plan}
               </span>
-              <span className="text-xs">(Optional)</span>
-            </span>
-            {/* {bookingData.week2Date && (
-              <span className="text-xs opacity-90">
-                {bookingData.week2Date.toLocaleDateString("de-DE")} •{" "}
-                {bookingData.week2Time}
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-white">Dauer pro Session:</span>
+              <span className="font-semibold text-white">
+                {selectedPricing?.duration ?? 60} Minuten
               </span>
-            )} */}
-          </button>
-        </div>
-
-        {/* Calendar */}
-        <div className="mb-8">
-          <h3 className="font-semibold mb-4 text-lg">Datum wählen</h3>
-          <div className="border rounded-xl p-4 bg-gray-50 calendar-container">
-            <Calendar
-              onChange={(value) => value && handleDateSelect(value as Date)}
-              value={
-                activeWeek === "week1"
-                  ? bookingData.week1Date
-                  : bookingData.week2Date
-              }
-              minDate={new Date()}
-              locale="de-DE"
-              className="mx-auto border-none"
-            />
+            </div>
+            <div className="border-t border-gray-600 pt-3 mt-3">
+              <div className="flex justify-between items-center">
+                <span className="text-white text-lg">Gesamtpreis:</span>
+                <span className="text-3xl font-bold text-primary">
+                  €{selectedPricing?.price}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Time Slots */}
-        <div>
-          <h3 className="font-semibold mb-4 text-lg">Uhrzeit wählen</h3>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-            {timeSlots.map((time) => {
-              const isSelected = getCurrentSelectedTime() === time;
-              return (
-                <button
-                  key={time}
-                  onClick={() => handleTimeSelect(time)}
-                  className={`py-3 px-2 rounded-lg border-2 transition-all font-medium ${
-                    isSelected
-                      ? "bg-primary text-white border-primary shadow-md scale-105"
-                      : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:scale-105"
-                  }`}
-                >
-                  {time}
-                </button>
-              );
-            })}
-          </div>
+        {/* How it works */}
+        <div className="bg-[#2A2A2A] rounded-xl p-6">
+          <h3 className="text-lg font-bold text-white mb-4">
+            So funktioniert's:
+          </h3>
+          <ol className="space-y-3 text-white text-sm">
+            <li className="flex gap-3">
+              <span className="shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold">
+                1
+              </span>
+              <span>Fülle das Formular aus und bezahle mit PayPal</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold">
+                2
+              </span>
+              <span>Nach erfolgreicher Zahlung öffnet sich mein Kalender</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold">
+                3
+              </span>
+              <span>Wähle deinen Wunschtermin (bis zu 2 Wochen im Voraus)</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold">
+                4
+              </span>
+              <span>Du erhältst eine Bestätigung per E-Mail</span>
+            </li>
+          </ol>
         </div>
       </div>
 
@@ -274,7 +235,7 @@ export default function BookingPayment() {
         </h2>
 
         {/* PayPal Logo */}
-        <div className="mb-6 flex justify-center  p-4 rounded-lg">
+        <div className="mb-6 flex justify-center p-4 rounded-lg">
           <div className="relative w-32 h-12">
             <Image
               src="/paypal.svg"
@@ -285,24 +246,8 @@ export default function BookingPayment() {
           </div>
         </div>
 
-        {/* Selected Package Info */}
-        <div className="mb-6 p-4 md:p-6 bg-[#3B3B3B] rounded-xl  shadow-sm">
-          <h3 className="font-semibold mb-2 text-white text-sm">
-            Ausgewähltes Paket:
-          </h3>
-          <p className="text-lg md:text-xl font-bold text-primary mb-3">
-            {selectedPricing?.package}
-          </p>
-          <div className="flex items-center justify-between">
-            <span className="text-white">Preis:</span>
-            <span className="text-2xl md:text-3xl font-bold text-white">
-              €{selectedPricing?.price}
-            </span>
-          </div>
-        </div>
-
         {/* Form Fields */}
-        <div className="space-y-4">
+        <div className="space-y-4 mb-6">
           <FormInput
             icon={
               <svg
@@ -364,28 +309,29 @@ export default function BookingPayment() {
             type="email"
             required
           />
-
-          <FormInput
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24"
-                viewBox="0 -960 960 960"
-                width="24"
-                fill="#B9B9B9"
-              >
-                <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z" />
-              </svg>
-            }
-            placeholder="Adresse (z.B. Musterstraße 1, 58636 Iserlohn)"
-            value={bookingData.location}
-            onChange={(value) =>
-              setBookingData({ ...bookingData, location: value })
-            }
-            onBlur={handleLocationBlur}
-            error={locationError}
-            required
-          />
+          {selectedPricing?.plan === "home" && (
+            <FormInput
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                  fill="#B9B9B9"
+                >
+                  <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z" />
+                </svg>
+              }
+              placeholder="Adresse (z.B. Musterstraße 1, 58636 Iserlohn)"
+              value={bookingData.location}
+              onChange={(value) =>
+                setBookingData({ ...bookingData, location: value })
+              }
+              onBlur={handleLocationBlur}
+              error={locationError}
+              required
+            />
+          )}
 
           {isValidatingLocation && (
             <p className="text-sm text-gray-500 flex items-center gap-2">
@@ -455,40 +401,27 @@ export default function BookingPayment() {
                         value: selectedPricing?.price.toString() || "0",
                         currency_code: "EUR",
                       },
-                      custom_id: JSON.stringify({
-                        packageId: selectedPricing?.id,
-                        packageName: selectedPricing?.package,
-                        plan: selectedPricing?.plan,
-                        week1: {
-                          date: bookingData.week1Date?.toISOString(),
-                          time: bookingData.week1Time,
-                        },
-                        week2: bookingData.week2Date
-                          ? {
-                              date: bookingData.week2Date?.toISOString(),
-                              time: bookingData.week2Time,
-                            }
-                          : null,
-                        customerInfo: {
-                          name: bookingData.name,
-                          phone: bookingData.phone,
-                          email: bookingData.email,
-                          location: bookingData.location,
-                          description: bookingData.description,
-                        },
-                      }),
+                      custom_id: paymentRef,
                     },
                   ],
                 });
               }}
               onApprove={(data, actions) => {
                 return actions.order!.capture().then((details) => {
-                  alert(
-                    `Zahlung erfolgreich! Danke, ${details.payment_source?.paypal?.name}!`
-                  );
-                  // Here you can send data to your backend
                   console.log("Payment Details:", details);
                   console.log("Booking Data:", bookingData);
+
+                  // Store payment details
+                  setPaymentDetails(details);
+
+                  // Open Calendly modal
+                  setShowCalendly(true);
+
+                  // Optional: Send payment data to your backend
+                  // await fetch('/api/bookings', {
+                  //   method: 'POST',
+                  //   body: JSON.stringify({ details, bookingData })
+                  // });
                 });
               }}
               onError={(err) => {
@@ -501,13 +434,38 @@ export default function BookingPayment() {
           </PayPalScriptProvider>
         </div>
 
-        {/* <p className="text-xs text-gray-500 text-center mt-4">
-          🔒 Sichere Zahlung über PayPal. Ihre Daten sind geschützt.
-        </p> */}
-        <p className="text-sm text-center w-full">
+        <p className="text-sm text-center w-full mt-6">
           © {new Date().getFullYear()} PeakMitSadiq. Alle Rechte vorbehalten.
         </p>
       </div>
+
+      {/* Calendly Modal */}
+      {showCalendly && (
+        <PopupModal
+          url={process.env.NEXT_PUBLIC_CALENDLY_URL || ""}
+          onModalClose={() => {
+            setShowCalendly(false);
+            setOpenPricingModal(false);
+          }}
+          open={showCalendly}
+          rootElement={document.getElementById("root") as HTMLElement}
+          prefill={{
+            email: bookingData.email,
+            firstName: bookingData.name.split(" ")[0],
+            lastName: bookingData.name.split(" ").slice(1).join(" "),
+            customAnswers: {
+              a1: bookingData.phone,
+              a2: bookingData.location,
+              a3: bookingData.description,
+            },
+          }}
+          utm={{
+            utmCampaign: selectedPricing?.package,
+            utmSource: "website",
+            utmMedium: "payment",
+          }}
+        />
+      )}
     </div>
   );
 }

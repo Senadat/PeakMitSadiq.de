@@ -24,9 +24,9 @@ export default function FormInput({
   className = "",
 }: FormInputProps) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative `}>
       <div
-        className={`flex items-center gap-3 px-4 text-white py-3 rounded-full transition-all ${
+        className={`flex items-center gap-3 px-4 text-white py-3  ${className} rounded-full transition-all ${
           error
             ? "border-red-500 focus-within:ring-2 focus-within:ring-red-200"
             : "border-gray-300 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary"

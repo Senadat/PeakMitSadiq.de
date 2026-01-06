@@ -3,9 +3,11 @@ import Image from "next/image";
 export default function SectionHeading({
   children,
   className,
+  showDecoration = true,
 }: Readonly<{
   children: React.ReactNode;
   className?: string;
+  showDecoration?: boolean;
 }>) {
   return (
     <div
@@ -16,6 +18,9 @@ export default function SectionHeading({
       "
     >
       <h2
+        style={{
+          fontSize: "10vw",
+        }}
         className={`
     relative text-center
     font-semibold text-primary
@@ -35,19 +40,26 @@ export default function SectionHeading({
       </h2>
 
       {/* Decoration */}
-      <div
-        className="
+      {showDecoration && (
+        <div
+          className="
           absolute
-          top-2 sm:top-4 lg:top-8
-          right-1 sm:right-2 lg:right-3
+         top-[0%]
+         right-[0%]
 
           w-24 h-8
           sm:w-40 sm:h-12
           lg:w-60 lg:h-20
         "
-      >
-        <Image alt="heading decoration" fill src="/heading-line.svg" priority />
-      </div>
+        >
+          <Image
+            alt="heading decoration"
+            fill
+            src="/heading-line.svg"
+            priority
+          />
+        </div>
+      )}
     </div>
   );
 }

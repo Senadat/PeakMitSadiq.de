@@ -43,7 +43,7 @@ export default function CoachingCarousel() {
           willChange: "transform",
           gap: `${cardGap}%`,
         }}
-        className={`w-[200%] flex items-center relative mb-10`}
+        className={`w-[200%] flex items-stretch relative mb-10`}
       >
         {items.map((opt, i) => (
           <CarouselCard
