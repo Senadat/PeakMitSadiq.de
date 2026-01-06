@@ -1,5 +1,4 @@
 "use client";
-import SectionHeading from "../heading";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import SectionHeading from "../heading";
