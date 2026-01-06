@@ -1,5 +1,5 @@
 "use client";
-
+import SectionHeading from "../heading";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import SectionHeading from "../heading";
@@ -59,7 +59,7 @@ export default function About() {
                 src={section.img}
                 alt={section.alt}
                 fill
-                className="object-cover rounded-lg"
+                className="object-cover rounded-lg "
                 sizes="(max-width: 768px) 100vw, 420px"
               />
             </div>
