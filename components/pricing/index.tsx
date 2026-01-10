@@ -8,10 +8,11 @@ import { useApp } from "@/context";
 import Link from "next/link";
 import Modal from "../modal";
 import BookingPayment from "./ui/paymentModal";
+import BookingConfirmation from "./ui/success";
 
 export default function Pricing() {
   const [tab, setTab] = useState<PricingPlan>("home");
-  const { openPricingModal, setOpenPricingModal } = useApp();
+  const { openPricingModal, setOpenPricingModal, showSuccess } = useApp();
 
   const tabOptions = [
     {
@@ -183,7 +184,11 @@ export default function Pricing() {
             />
           )}
           {tab === "personal" && (
-            <PricingSection options={personalOptions} showCenter={false} />
+            <PricingSection
+              title={`Für die mobilen Einheiten dauert die Anfahrtszeit 40 Minuten (Hin- und Rückfahrt.`}
+              options={personalOptions}
+              showCenter={false}
+            />
           )}
         </motion.div>
       </AnimatePresence>
@@ -236,7 +241,29 @@ export default function Pricing() {
         isOpen={openPricingModal}
         onClose={() => setOpenPricingModal(false)}
       >
-        <BookingPayment />
+        <AnimatePresence mode="wait">
+          {showSuccess ? (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >
+              <BookingConfirmation />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="payment"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >
+              <BookingPayment />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Modal>
     </motion.section>
   );

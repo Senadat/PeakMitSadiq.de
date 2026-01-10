@@ -53,13 +53,15 @@ export default function About() {
                 md:w-1/2
                 xl:w-105
                 aspect-4/5
+                border-3 
+                rounded-lg
               "
             >
               <Image
                 src={section.img}
                 alt={section.alt}
                 fill
-                className="object-cover rounded-lg "
+                className="object-cover rounded-lg"
                 sizes="(max-width: 768px) 100vw, 420px"
               />
             </div>

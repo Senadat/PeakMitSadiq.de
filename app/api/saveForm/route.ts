@@ -4,6 +4,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    console.table(body);
+    console.log(body);
+
     // Send data to Google Apps Script
     const res = await fetch(process.env.NEXT_PUBLIC_SHEET_ENDPOINT!, {
       method: "POST",

@@ -50,7 +50,8 @@ export default function CustomInput({
           w-4 h-4
           sm:w-5 sm:h-5
           md:w-6 md:h-6
-          border-4
+          md:border-4
+          border-3
           transition-all duration-200
 
           ${

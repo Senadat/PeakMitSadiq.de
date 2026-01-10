@@ -50,7 +50,7 @@ export default function Portfolio() {
         >
           <SectionHeading>
             Echte Ergebnisse <br />
-            echte Stimmen
+            {/* echte Stimmen */}
           </SectionHeading>
         </motion.div>
 

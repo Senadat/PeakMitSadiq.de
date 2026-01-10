@@ -4,7 +4,7 @@ import CarouselControls from "./ui/controls";
 import CarouselSteps from "./ui/steps";
 import CarouselCard from "./ui/card";
 
-export default function CoachingCarousel() {
+export default function CoachingCarousel({ left }: { left: string }) {
   const {
     currentIndex,
     items,
@@ -88,7 +88,7 @@ export default function CoachingCarousel() {
       <div
         ref={carouselRef}
         style={{
-          left: `calc(${-cardWidth * 6.24}%)`,
+          left,
           transform: `${
             isTranslating
               ? `translateX(${
@@ -110,9 +110,8 @@ export default function CoachingCarousel() {
           willChange: "transform",
           gap: `${cardGap}%`,
           touchAction: "pan-y", // Allow vertical scroll but prevent horizontal browser gestures
-          cursor: isDragging.current ? "grabbing" : "grab",
         }}
-        className={`w-[200%] flex items-stretch relative mb-10`}
+        className={`w-[200%] flex items-stretch relative mb-5`}
       >
         {items.map((opt, i) => (
           <CarouselCard

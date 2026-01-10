@@ -14,12 +14,12 @@ export default function Footer() {
     {
       title: "instagram",
       icon: <Image src={"/instagram.svg"} alt="instagram icon" fill />,
-      link: `#`,
+      link: `https://www.instagram.com/sadiq.aj/`,
     },
     {
       title: "whatsapp",
       icon: <Image src={"/whatsapp.svg"} alt="whatsapp icon" fill />,
-      link: `https://api.whatsapp.com/send?phone=6777485799`,
+      link: `https://api.whatsapp.com/send?phone=4915734693269`,
     },
     // {
     //   title: "x",
@@ -110,7 +110,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="font-bold text-primary hover:text-primary/80 transition-colors duration-300"
                 >
-                  Senedat
+                  Senadat
                 </a>
               </p>
             </div>

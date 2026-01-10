@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { useApp } from "@/context";
-import Image from "next/image";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { PopupModal } from "react-calendly";
 import FormInput from "@/components/input";
+import { SheetsPayload } from "@/types/sheets";
 
 interface BookingData {
   name: string;
@@ -13,22 +11,100 @@ interface BookingData {
   email: string;
   location: string;
   description: string;
+  available_dates: string[] | null;
+}
+
+interface DateTimeSelection {
+  date: string;
+  time: string;
 }
 
 export default function BookingPayment() {
-  const { selectedPricing, setOpenPricingModal } = useApp();
+  const { selectedPricing, setShowSuccess, formData } = useApp();
+  const [loading, setLoading] = useState(false);
   const [bookingData, setBookingData] = useState<BookingData>({
     name: "",
     phone: "",
     email: "",
     location: "",
     description: "",
+    available_dates: [],
   });
+
+  const [dateTimeSelections, setDateTimeSelections] = useState<
+    DateTimeSelection[]
+  >([
+    { date: "", time: "" },
+    { date: "", time: "" },
+    { date: "", time: "" },
+  ]);
 
   const [locationError, setLocationError] = useState("");
   const [isValidatingLocation, setIsValidatingLocation] = useState(false);
-  const [showCalendly, setShowCalendly] = useState(false);
-  const [paymentDetails, setPaymentDetails] = useState<any>(null);
+  const [error, setError] = useState("");
+
+  // Generate available time slots (30-min intervals)
+  const generateTimeSlots = (dayOfWeek: number): string[] => {
+    const slots: string[] = [];
+
+    // Sunday (0) is closed
+    if (dayOfWeek === 0) return slots;
+
+    // Saturday (6): 9:00-18:00
+    const startHour = dayOfWeek === 6 ? 9 : 8;
+    const endHour = dayOfWeek === 6 ? 18 : 20;
+
+    for (let hour = startHour; hour < endHour; hour++) {
+      slots.push(`${hour.toString().padStart(2, "0")}:00`);
+      slots.push(`${hour.toString().padStart(2, "0")}:30`);
+    }
+
+    return slots;
+  };
+
+  // Get min and max date (today to 2 weeks from now)
+  const getMinDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  };
+
+  const getMaxDate = () => {
+    const today = new Date();
+    const twoWeeks = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000);
+    return twoWeeks.toISOString().split("T")[0];
+  };
+
+  // Format date to DD.MM.YYYY
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return "";
+    const [year, month, day] = dateString.split("-");
+    return `${day}.${month}.${year}`;
+  };
+
+  // Update date/time selection and sync with available_dates
+  const updateDateTime = (
+    index: number,
+    field: "date" | "time",
+    value: string
+  ) => {
+    const newSelections = [...dateTimeSelections];
+    newSelections[index][field] = value;
+    setDateTimeSelections(newSelections);
+
+    // Update available_dates array
+    const formattedDates = newSelections
+      .filter((sel) => sel.date && sel.time)
+      .map((sel) => `${formatDate(sel.date)} - ${sel.time}`);
+
+    setBookingData({ ...bookingData, available_dates: formattedDates });
+  };
+
+  // Get available time slots based on selected date
+  const getTimeSlotsForDate = (dateString: string): string[] => {
+    if (!dateString) return [];
+    const date = new Date(dateString);
+    return generateTimeSlots(date.getDay());
+  };
 
   // Haversine formula for distance calculation
   const calculateDistance = (
@@ -53,7 +129,7 @@ export default function BookingPayment() {
   // Validate location using free Nominatim API (OpenStreetMap)
   const validateLocation = async (address: string): Promise<boolean> => {
     if (selectedPricing && selectedPricing?.plan !== "home") {
-      true;
+      return true;
     }
 
     setIsValidatingLocation(true);
@@ -129,17 +205,80 @@ export default function BookingPayment() {
     }
   };
 
-  function generatePaymentRef() {
-    return `PMT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-  }
+  const handleSubmit = async () => {
+    if (loading || !isFormValid) return;
 
-  const paymentRef = generatePaymentRef();
+    const payload: SheetsPayload = {
+      name: bookingData.name,
+      email: bookingData.email,
+      phone: bookingData.phone,
+      address: bookingData.location ?? null,
+      available_dates: bookingData.available_dates
+        ? bookingData.available_dates.join(", ")
+        : null,
+      package_name: selectedPricing?.package ?? null,
+      package_price: selectedPricing ? `€${selectedPricing.price}` : null,
+      session_duration: selectedPricing
+        ? `${selectedPricing.duration} Minuten`
+        : null,
+      message: bookingData.description ?? null,
+      goal: formData.a ?? null,
+      gender: formData.b ?? null,
+      age: formData.c ?? null,
+      commitment: formData.d ?? null,
+    };
+
+    setLoading(true);
+    setError("");
+
+    try {
+      //Notify the trainer
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: bookingData.name,
+          email: bookingData.email,
+          message: bookingData.description,
+          isBooking: true,
+          payload,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        throw new Error("Submission failed");
+      }
+
+      try {
+        await fetch("/api/saveForm", {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            ...payload,
+            token: process.env.NEXT_PUBLIC_FORM_TOKEN,
+          }),
+        });
+      } catch (e) {
+        console.error(e);
+      }
+
+      setShowSuccess(true);
+    } catch (err: any) {
+      console.error(err);
+      setLoading(false);
+      setError(err.message);
+    }
+  };
 
   const isFormValid =
     bookingData.name &&
     bookingData.phone &&
     bookingData.email &&
-    bookingData.location &&
+    (selectedPricing?.plan !== "home" || bookingData.location) &&
+    bookingData.available_dates &&
+    bookingData.available_dates.length > 0 &&
     !locationError &&
     !isValidatingLocation;
 
@@ -148,11 +287,11 @@ export default function BookingPayment() {
       {/* Section 1: Package Info */}
       <div className="flex-1 p-6 md:p-8 lg:p-10 overflow-y-auto">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-3">
-          Möchtest du direkt einen Termin buchen?
+          Jetzt direkt einen Termin buchen
         </h2>
         <p className="mb-8 text-sm md:text-base text-white">
-          Zahle jetzt sicher über PayPal und buche anschließend deinen
-          Wunschtermin direkt in meinem Kalender.
+          Wähle deine bevorzugten Termine aus und buche deinen Wunschtermin
+          direkt in meinem Kalender.
         </p>
 
         {/* Package Details */}
@@ -189,39 +328,6 @@ export default function BookingPayment() {
             </div>
           </div>
         </div>
-
-        {/* How it works */}
-        <div className="bg-[#2A2A2A] rounded-xl p-6">
-          <h3 className="text-lg font-bold text-white mb-4">
-            So funktioniert's:
-          </h3>
-          <ol className="space-y-3 text-white text-sm">
-            <li className="flex gap-3">
-              <span className="shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold">
-                1
-              </span>
-              <span>Fülle das Formular aus und bezahle mit PayPal</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold">
-                2
-              </span>
-              <span>Nach erfolgreicher Zahlung öffnet sich mein Kalender</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold">
-                3
-              </span>
-              <span>Wähle deinen Wunschtermin (bis zu 2 Wochen im Voraus)</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold">
-                4
-              </span>
-              <span>Du erhältst eine Bestätigung per E-Mail</span>
-            </li>
-          </ol>
-        </div>
       </div>
 
       {/* Divider */}
@@ -231,20 +337,8 @@ export default function BookingPayment() {
       {/* Section 2: Checkout */}
       <div className="flex-1 p-6 md:p-8 lg:p-10 bg-background overflow-y-auto">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary text-center mb-6">
-          Kasse
+          Terminanfrage
         </h2>
-
-        {/* PayPal Logo */}
-        <div className="mb-6 flex justify-center p-4 rounded-lg">
-          <div className="relative w-32 h-12">
-            <Image
-              src="/paypal.svg"
-              alt="PayPal"
-              fill
-              className="object-contain"
-            />
-          </div>
-        </div>
 
         {/* Form Fields */}
         <div className="space-y-4 mb-6">
@@ -309,6 +403,7 @@ export default function BookingPayment() {
             type="email"
             required
           />
+
           {selectedPricing?.plan === "home" && (
             <FormInput
               icon={
@@ -359,6 +454,76 @@ export default function BookingPayment() {
             </p>
           )}
 
+          {/* Date/Time Selections */}
+          <div className="space-y-4 pt-4">
+            <h3 className="text-lg font-semibold text-primary">
+              Wähle bis zu 3 Wunschtermine (mindestens 1 erforderlich)
+            </h3>
+
+            {dateTimeSelections.map((selection, index) => (
+              <div
+                key={index}
+                className="bg-[#3B3B3B] rounded-lg p-4 space-y-3"
+              >
+                <label className="block text-white font-medium">
+                  {index + 1}. Terminoption{" "}
+                  {index === 0 && <span className="text-red-500">*</span>}
+                </label>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {/* Date Picker */}
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Datum
+                    </label>
+                    <input
+                      type="date"
+                      value={selection.date}
+                      min={getMinDate()}
+                      max={getMaxDate()}
+                      onChange={(e) =>
+                        updateDateTime(index, "date", e.target.value)
+                      }
+                      className="w-full px-4 py-3 text-white bg-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Time Picker */}
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Uhrzeit
+                    </label>
+                    <select
+                      value={selection.time}
+                      onChange={(e) =>
+                        updateDateTime(index, "time", e.target.value)
+                      }
+                      disabled={!selection.date}
+                      className="w-full px-4 py-3 text-white bg-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <option value="">Zeit wählen</option>
+                      {getTimeSlotsForDate(selection.date).map((time) => (
+                        <option key={time} value={time}>
+                          {time} Uhr
+                        </option>
+                      ))}
+                      {selection.date &&
+                        getTimeSlotsForDate(selection.date).length === 0 && (
+                          <option value="" disabled>
+                            Sonntag geschlossen
+                          </option>
+                        )}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <p className="text-sm text-gray-400">
+              Öffnungszeiten: Mo-Fr 08:00-20:00, Sa 09:00-18:00, So geschlossen
+            </p>
+          </div>
+
           <div className="relative">
             <textarea
               placeholder="Zusätzliche Anmerkungen (Optional)"
@@ -375,97 +540,22 @@ export default function BookingPayment() {
           </div>
         </div>
 
-        {/* PayPal Integration */}
-        <div className="mt-6">
-          <PayPalScriptProvider
-            options={{
-              clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "",
-              currency: "EUR",
-            }}
+        <div className="mt-6 flex items-center justify-center ">
+          <button
+            onClick={handleSubmit}
+            disabled={loading || !isFormValid}
+            className="bg-primary/90 hover:bg-primary text-white py-3 px-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <PayPalButtons
-              disabled={!isFormValid}
-              style={{
-                layout: "vertical",
-                color: "gold",
-                shape: "rect",
-                label: "paypal",
-              }}
-              createOrder={(data, actions) => {
-                return actions.order.create({
-                  intent: "CAPTURE",
-                  purchase_units: [
-                    {
-                      description: `${selectedPricing?.package} - ${bookingData.name}`,
-                      amount: {
-                        value: selectedPricing?.price.toString() || "0",
-                        currency_code: "EUR",
-                      },
-                      custom_id: paymentRef,
-                    },
-                  ],
-                });
-              }}
-              onApprove={(data, actions) => {
-                return actions.order!.capture().then((details) => {
-                  console.log("Payment Details:", details);
-                  console.log("Booking Data:", bookingData);
-
-                  // Store payment details
-                  setPaymentDetails(details);
-
-                  // Open Calendly modal
-                  setShowCalendly(true);
-
-                  // Optional: Send payment data to your backend
-                  // await fetch('/api/bookings', {
-                  //   method: 'POST',
-                  //   body: JSON.stringify({ details, bookingData })
-                  // });
-                });
-              }}
-              onError={(err) => {
-                console.error("PayPal Error:", err);
-                alert(
-                  "Es gab ein Problem mit der Zahlung. Bitte versuchen Sie es erneut."
-                );
-              }}
-            />
-          </PayPalScriptProvider>
+            {loading ? "Wird gesendet..." : "Termin anfragen"}
+          </button>
         </div>
+
+        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
         <p className="text-sm text-center w-full mt-6">
           © {new Date().getFullYear()} PeakMitSadiq. Alle Rechte vorbehalten.
         </p>
       </div>
-
-      {/* Calendly Modal */}
-      {showCalendly && (
-        <PopupModal
-          url={process.env.NEXT_PUBLIC_CALENDLY_URL || ""}
-          onModalClose={() => {
-            setShowCalendly(false);
-            setOpenPricingModal(false);
-          }}
-          open={showCalendly}
-          rootElement={document.getElementById("root") as HTMLElement}
-          prefill={{
-            email: bookingData.email,
-            firstName: bookingData.name.split(" ")[0],
-            lastName: bookingData.name.split(" ").slice(1).join(" "),
-            customAnswers: {
-              a1: bookingData.phone,
-              a2: bookingData.location,
-              a3: bookingData.description,
-            },
-          }}
-          utm={{
-            utmCampaign: selectedPricing?.package,
-            utmSource: "website",
-            utmMedium: "payment",
-          }}
-        />
-      )}
     </div>
   );
 }

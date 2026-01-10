@@ -22,6 +22,8 @@ interface AppContextValue {
   formData: HeroFormData;
   openPricingModal: boolean;
   setOpenPricingModal: (value: boolean) => void;
+  showSuccess: boolean;
+  setShowSuccess: (value: boolean) => void;
   selectedPricing: PricingCardType | null;
   setSelectedPricing: (value: PricingCardType) => void;
 
@@ -36,9 +38,9 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const backgroundImages = [
-    "/hero1.jpg",
-    "/hero2.jpg",
-    "/hero3.jpg",
+    "/hero7.jpeg",
+    "/hero6.jpeg",
+    "/hero5.jpeg",
     "/hero4.jpg",
   ];
 
@@ -54,20 +56,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const [currentHeroImage, setCurrentHeroImage] = useState(backgroundImages[0]);
   const [openPricingModal, setOpenPricingModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<PricingCardType>({
-    id: "home-muscle-gain",
-    price: 1500,
-    package: "Peak Muscle Gain Home",
-    plan: "home",
-    duration: 60,
+    id: "personal-gym-30",
+    price: 41.65,
+    package: `1:1 Personal Training
+Studio
+(30 Minuten)`,
+    plan: "personal",
+    duration: 30,
     features: [
-      "2× pro Woche Personal Training (60 Min.) im PT-Studio",
-      "Muskelaufbau-orientierter Trainingsplan",
-      "Ernährungs-Guide für Muskelaufbau",
-      "Start-Körperanalyse",
-      "Wöchentliche Check-ins",
-      "WhatsApp-Support",
-      "Abschlussanalyse",
+      "30 Min intensives Training im PT-Studio",
+      "Individueller Trainingsplan",
+      "Technik-Coaching während der Einheit",
     ],
   });
 
@@ -88,31 +89,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [backgroundImages]
   );
 
-  const handleSubmit = async () => {
-    try {
-      const res = await fetch(process.env.NEXT_PUBLIC_SHEET_ENDPOINT!, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain" },
-
-        body: JSON.stringify({
-          ...formData,
-          token: process.env.NEXT_PUBLIC_FORM_TOKEN,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        throw new Error("Submission failed");
-      }
-
-      // success UX
-      console.log("Saved to sheet");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
     if (formData.d !== "") {
       const sectionId =
@@ -124,7 +100,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         document.getElementById(sectionId)?.scrollIntoView({
           behavior: "smooth",
         });
-        handleSubmit();
         setHasCompletedForm(true);
       }
     }
@@ -142,7 +117,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setSelectedPricing,
         openPricingModal,
         setOpenPricingModal,
-
+        showSuccess,
+        setShowSuccess,
         updateFormField,
         setCurrentFormIndex,
         setHasCompletedForm,

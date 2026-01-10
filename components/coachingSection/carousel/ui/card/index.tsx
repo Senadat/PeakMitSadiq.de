@@ -4,9 +4,9 @@ import Image from "next/image";
 export default function CarouselCard({
   cardData,
   width,
-  minHeight,
-  maxHeight,
-}: {
+}: // minHeight,
+// maxHeight,
+{
   cardData: CoachingCardType;
   width: string;
   minHeight: number;
@@ -36,7 +36,12 @@ export default function CarouselCard({
       >
         {cardData.title}
       </p>
-      <p className="2xl:text-[24px] text-[10px] sm:text-xs md:text-[16px] lg:text-[18px] xl:text-[20px]">
+      <p
+        style={{
+          fontSize: "clamp(12px, 1.4vw, 18px)",
+        }}
+        className="text-white"
+      >
         {cardData.description}
       </p>
     </div>

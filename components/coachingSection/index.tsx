@@ -30,15 +30,28 @@ export default function Coaching() {
         dafür, dass du
         <br /> immer auf dem richtigen Kurs bleibst.
       </p>
-      {
-        <CarouselProvider
-          length={coachingOptions.length}
-          cardGap={1}
-          cardWidth={15}
-        >
-          <CoachingCarousel />
-        </CarouselProvider>
-      }
+      <div className="hidden md:block">
+        {
+          <CarouselProvider
+            length={coachingOptions.length}
+            cardGap={1}
+            cardWidth={15}
+          >
+            <CoachingCarousel left={`calc(${-15 * 6.2}%)`} />
+          </CarouselProvider>
+        }
+      </div>
+      <div className="md:hidden">
+        {
+          <CarouselProvider
+            length={coachingOptions.length}
+            cardGap={1}
+            cardWidth={30}
+          >
+            <CoachingCarousel left={`calc(${-30 * 7.5}%)`} />
+          </CarouselProvider>
+        }
+      </div>
     </section>
   );
 }

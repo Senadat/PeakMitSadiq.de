@@ -12,7 +12,7 @@ export default function SectionD() {
       className="
         bg-transparent
         flex flex-col justify-center
-        gap-4 sm:gap-5 lg:gap-6
+        gap-4 sm:gap-5 lg:gap-4
       "
     >
       {/* Heading */}
@@ -21,7 +21,7 @@ export default function SectionD() {
           fontSize: "clamp(18px, 2vw, 40px)",
         }}
         className="
-          font-semibold text-center
+          font-semibold text-center lg:text-left
           
         "
       >
@@ -33,7 +33,7 @@ export default function SectionD() {
       <div
         className="
           flex flex-col items-center justify-center
-          gap-2 sm:gap-3 lg:gap-2
+          gap-2 sm:gap-3 lg:gap-4 
         "
       >
         {options.map((opt) => (

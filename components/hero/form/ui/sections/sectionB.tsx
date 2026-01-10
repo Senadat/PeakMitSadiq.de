@@ -18,7 +18,7 @@ export default function SectionB() {
           fontSize: "clamp(18px, 2vw, 40px)",
         }}
         className="
-          font-semibold text-center
+          font-semibold text-center lg:text-left
        
         "
       >
@@ -29,7 +29,7 @@ export default function SectionB() {
       <div
         className="
           flex flex-col items-center justify-center
-          gap-2 sm:gap-3 lg:gap-2
+          gap-2 sm:gap-3 lg:gap-4
         "
       >
         {options.map((opt) => (

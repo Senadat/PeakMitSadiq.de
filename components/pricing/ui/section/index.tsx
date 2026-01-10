@@ -18,7 +18,7 @@ export default function PriceSection({
         </p>
       )}
 
-      <div className="flex flex-col justify-center md:items-stretch items-center md:flex-row flex-wrap gap-10">
+      <div className="flex flex-col justify-center md:items-stretch items-center md:flex-row flex-wrap gap-[clamp(16px,1%,40px)]">
         {options.map((opt, i) => (
           <PricingCard
             key={`pricing-card-${i}`}
