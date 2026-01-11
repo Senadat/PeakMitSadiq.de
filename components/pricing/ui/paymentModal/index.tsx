@@ -30,6 +30,8 @@ export default function BookingPayment() {
     description: "",
     available_dates: [],
   });
+  const [locationDebounceTimer, setLocationDebounceTimer] =
+    useState<NodeJS.Timeout | null>(null);
 
   const [dateTimeSelections, setDateTimeSelections] = useState<
     DateTimeSelection[]
@@ -61,6 +63,14 @@ export default function BookingPayment() {
 
     return slots;
   };
+
+  const showLocation = [
+    "home-muscle-gain",
+    "home-pain-free",
+    "home-weight-loss",
+    "personal-home-60",
+    "personal-home-30",
+  ].includes(selectedPricing?.id ?? "");
 
   // Get min and max date (today to 2 weeks from now)
   const getMinDate = () => {
@@ -128,9 +138,9 @@ export default function BookingPayment() {
 
   // Validate location using free Nominatim API (OpenStreetMap)
   const validateLocation = async (address: string): Promise<boolean> => {
-    if (selectedPricing && selectedPricing?.plan !== "home") {
-      return true;
-    }
+    // if (selectedPricing && selectedPricing?.plan !== "home") {
+    //   return true;
+    // }
 
     setIsValidatingLocation(true);
     const iserlohnLat = 51.3761;
@@ -174,26 +184,29 @@ export default function BookingPayment() {
 
         if (distance > 30) {
           setLocationError(
-            `Standort ist ${distance.toFixed(
+            `Der Standort ist ${distance.toFixed(
               1
-            )}km entfernt. Maximal 30km von Iserlohn erlaubt.`
+            )} km entfernt. Der maximale Umkreis beträgt 30 km von Iserlohn.`
           );
           setIsValidatingLocation(false);
           return false;
         }
+
         setLocationError("");
         setIsValidatingLocation(false);
         return true;
       } else {
         setLocationError(
-          "Standort konnte nicht gefunden werden. Bitte vollständige Adresse eingeben."
+          "Der Standort konnte nicht gefunden werden. Bitte geben Sie eine vollständige Adresse in Deutschland ein."
         );
         setIsValidatingLocation(false);
         return false;
       }
     } catch (error) {
       console.error("Location validation error:", error);
-      setLocationError("Fehler bei der Standortüberprüfung.");
+      setLocationError(
+        "Bei der Standortüberprüfung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+      );
       setIsValidatingLocation(false);
       return false;
     }
@@ -202,6 +215,27 @@ export default function BookingPayment() {
   const handleLocationBlur = async () => {
     if (bookingData.location && bookingData.location.length > 5) {
       await validateLocation(bookingData.location);
+    }
+  };
+
+  // Debounced validation for onChange
+  const handleLocationChange = (value: string) => {
+    setBookingData({ ...bookingData, location: value });
+
+    // Clear existing timer
+    if (locationDebounceTimer) {
+      clearTimeout(locationDebounceTimer);
+    }
+
+    // Set new timer to validate after 1.5 seconds of no typing
+    if (value && value.length > 5) {
+      const timer = setTimeout(() => {
+        validateLocation(value);
+      }, 1500);
+      setLocationDebounceTimer(timer);
+    } else {
+      // Clear error if input is too short
+      setLocationError("");
     }
   };
 
@@ -248,7 +282,7 @@ export default function BookingPayment() {
       const data = await res.json();
 
       if (!data.success) {
-        throw new Error("Submission failed");
+        throw new Error("Indienen mislukt");
       }
 
       try {
@@ -276,7 +310,7 @@ export default function BookingPayment() {
     bookingData.name &&
     bookingData.phone &&
     bookingData.email &&
-    (selectedPricing?.plan !== "home" || bookingData.location) &&
+    (!showLocation || bookingData.location) &&
     bookingData.available_dates &&
     bookingData.available_dates.length > 0 &&
     !locationError &&
@@ -306,12 +340,12 @@ export default function BookingPayment() {
                 {selectedPricing?.package}
               </span>
             </div>
-            <div className="flex justify-between items-center">
+            {/* <div className="flex justify-between items-center">
               <span className="text-white">Plan:</span>
               <span className="font-semibold text-white">
                 {selectedPricing?.plan}
               </span>
-            </div>
+            </div> */}
             <div className="flex justify-between items-center">
               <span className="text-white">Dauer pro Session:</span>
               <span className="font-semibold text-white">
@@ -404,7 +438,7 @@ export default function BookingPayment() {
             required
           />
 
-          {selectedPricing?.plan === "home" && (
+          {showLocation && (
             <FormInput
               icon={
                 <svg
@@ -419,9 +453,7 @@ export default function BookingPayment() {
               }
               placeholder="Adresse (z.B. Musterstraße 1, 58636 Iserlohn)"
               value={bookingData.location}
-              onChange={(value) =>
-                setBookingData({ ...bookingData, location: value })
-              }
+              onChange={handleLocationChange}
               onBlur={handleLocationBlur}
               error={locationError}
               required
@@ -456,7 +488,7 @@ export default function BookingPayment() {
 
           {/* Date/Time Selections */}
           <div className="space-y-4 pt-4">
-            <h3 className="text-lg font-semibold text-primary">
+            <h3 className="text-lg text-center font-semibold text-primary">
               Wähle bis zu 3 Wunschtermine (mindestens 1 erforderlich)
             </h3>
 

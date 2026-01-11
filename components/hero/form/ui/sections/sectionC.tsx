@@ -2,7 +2,7 @@ import { AgeRangeType } from "@/types/hero";
 import CustomInput from "../customInput";
 
 export default function SectionC() {
-  const options: AgeRangeType[] = ["18-25", "20-33", "34-45"];
+  const options: AgeRangeType[] = ["18-25", "26-33", "34-45"];
 
   return (
     <div

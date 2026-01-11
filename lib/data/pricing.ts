@@ -3,7 +3,7 @@ import { PricingCardType } from "@/types/pricing";
 export const homeOptions: PricingCardType[] = [
   {
     id: "home-muscle-gain",
-    price: 1500,
+    price: 1700,
     package: "Peak Muscle Gain Home",
     plan: "home",
     features: [
@@ -21,7 +21,7 @@ export const homeOptions: PricingCardType[] = [
   },
   {
     id: "home-pain-free",
-    price: 1500,
+    price: 1700,
     package: "PeakPainFree Home",
     plan: "home",
     duration: 60,
@@ -40,7 +40,7 @@ export const homeOptions: PricingCardType[] = [
 
   {
     id: "home-weight-loss",
-    price: 1500,
+    price: 1700,
     package: "Peak Weight Loss Home",
     plan: "home",
     features: [

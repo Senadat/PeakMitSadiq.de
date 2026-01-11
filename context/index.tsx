@@ -38,9 +38,9 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const backgroundImages = [
-    "/hero7.jpeg",
-    "/hero6.jpeg",
-    "/hero5.jpeg",
+    "/hero7.jpg",
+    "/hero6.jpg",
+    "/coaching3.jpg",
     "/hero4.jpg",
   ];
 

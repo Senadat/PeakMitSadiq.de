@@ -3,7 +3,9 @@ export default function LegalPage() {
   return (
     <div className="w-full md:w-4/5 xl:w-3/4 mx-auto px-4 py-8">
       {/* Page Title */}
-      <SectionHeading className="py-10">Impressum</SectionHeading>
+      <SectionHeading showDecoration={false} className="py-10">
+        Impressum
+      </SectionHeading>
 
       {/* Content */}
       <div className="space-y-8">
@@ -38,7 +40,14 @@ export default function LegalPage() {
             <li>Deutschland</li>
             <li>
               Diese Website wurde erstellt von{" "}
-              <span className="text-primary font-medium">Senadat</span>
+              <a
+                href="https://senadat.de/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-primary hover:text-primary/80 transition-colors duration-300"
+              >
+                Senadat
+              </a>
             </li>
           </ul>
         </div>

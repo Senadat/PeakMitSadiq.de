@@ -34,7 +34,7 @@ export default function Hero() {
             }}
             className="
             font-bold text-center lg:text-left tracking-tight text-primary 
-            leading-[0.95] flex-1 text-nowrap
+            leading-[0.95] text-nowrap lg:w-1/2
           "
           >
             Erreiche
@@ -51,7 +51,7 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
-                className=" max-w-xl lg:w-1/2 "
+                className="lg:w-1/2 "
               >
                 <HeroForm />
               </motion.div>

@@ -6,7 +6,11 @@ export async function POST(req: Request) {
   try {
     const { name, email, message, isBooking, payload } = await req.json();
 
-    if (!name || !email || !message) {
+    if (!name || !email) {
+      return Response.json({ error: "Missing fields" }, { status: 400 });
+    }
+
+    if (!isBooking && !message) {
       return Response.json({ error: "Missing fields" }, { status: 400 });
     }
 

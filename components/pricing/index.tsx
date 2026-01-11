@@ -173,7 +173,7 @@ export default function Pricing() {
         >
           {tab === "home" && (
             <PricingSection
-              title="Die Sitzungen dauern 1 Stunde 40 Minuten."
+              title="Die Sitzungen dauern 1 Stunde, Anfahrtszeit beträgt 40 Minuten."
               options={homeOptions}
             />
           )}
@@ -185,7 +185,7 @@ export default function Pricing() {
           )}
           {tab === "personal" && (
             <PricingSection
-              title={`Für die mobilen Einheiten dauert die Anfahrtszeit 40 Minuten (Hin- und Rückfahrt.`}
+              title={`Für die mobilen Einheiten dauert die Anfahrtszeit 40 Minuten (Hin- und Rückfahrt).`}
               options={personalOptions}
               showCenter={false}
             />
