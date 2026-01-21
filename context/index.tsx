@@ -8,13 +8,11 @@ import {
   useState,
   useCallback,
   ReactNode,
-  useEffect,
 } from "react";
 
 export type SectionId = string;
 
 interface AppContextValue {
-  // hero / form state
   backgroundImages: string[];
   currentHeroImage: string;
   currentFormIndex: number;
@@ -24,10 +22,14 @@ interface AppContextValue {
   setOpenPricingModal: (value: boolean) => void;
   showSuccess: boolean;
   setShowSuccess: (value: boolean) => void;
+  showRecommendation: boolean;
+  setShowRecommendation: (value: boolean) => void;
+  showRecommendationBox: boolean;
+  setShowRecommendationBox: (value: boolean) => void;
   selectedPricing: PricingCardType | null;
   setSelectedPricing: (value: PricingCardType) => void;
-
-  // actions
+  sendingEmail: boolean;
+  setSendingEmail: (value: boolean) => void;
   updateFormField: (field: keyof HeroFormData, value: string) => void;
   setCurrentFormIndex: (index: number) => void;
   setHasCompletedForm: (value: boolean) => void;
@@ -38,8 +40,8 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const backgroundImages = [
+    "/hero8.jpg",
     "/hero7.jpg",
-    "/hero6.jpg",
     "/coaching3.jpg",
     "/hero4.jpg",
   ];
@@ -52,11 +54,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     b: "",
     c: "",
     d: "",
+    e: "",
   });
 
+  const [sendingEmail, setSendingEmail] = useState(false);
   const [currentHeroImage, setCurrentHeroImage] = useState(backgroundImages[0]);
   const [openPricingModal, setOpenPricingModal] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showRecommendation, setShowRecommendation] = useState(false);
+  const [showRecommendationBox, setShowRecommendationBox] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<PricingCardType>({
     id: "personal-gym-30",
     price: 41.65,
@@ -81,29 +87,32 @@ Studio
       }));
 
       setCurrentFormIndex((prev) => {
-        const nextIndex = Math.min(prev + 1, backgroundImages.length - 1);
-        setCurrentHeroImage(backgroundImages[nextIndex]);
+        const nextIndex = Math.min(prev + 1, backgroundImages.length);
+        if (nextIndex <= 3) {
+          setCurrentHeroImage(backgroundImages[nextIndex]);
+        }
+
         return nextIndex;
       });
     },
-    [backgroundImages]
+    [backgroundImages],
   );
 
-  useEffect(() => {
-    if (formData.d !== "") {
-      const sectionId =
-        formData.d === "Ja, ich will meinen PEAK erreichen!"
-          ? "pricing"
-          : "contact";
+  // useEffect(() => {
+  //   if (formData.d !== "") {
+  //     const sectionId =
+  //       formData.d === "Ja, ich will meinen PEAK erreichen!"
+  //         ? "pricing"
+  //         : "contact";
 
-      if (!hasCompletedForm) {
-        document.getElementById(sectionId)?.scrollIntoView({
-          behavior: "smooth",
-        });
-        setHasCompletedForm(true);
-      }
-    }
-  }, [formData]);
+  //     if (!hasCompletedForm) {
+  //       document.getElementById(sectionId)?.scrollIntoView({
+  //         behavior: "smooth",
+  //       });
+  //       setHasCompletedForm(true);
+  //     }
+  //   }
+  // }, [formData]);
 
   return (
     <AppContext.Provider
@@ -115,6 +124,8 @@ Studio
         formData,
         selectedPricing,
         setSelectedPricing,
+        sendingEmail,
+        setSendingEmail,
         openPricingModal,
         setOpenPricingModal,
         showSuccess,
@@ -123,6 +134,10 @@ Studio
         setCurrentFormIndex,
         setHasCompletedForm,
         setCurrentHeroImage,
+        showRecommendation,
+        setShowRecommendation,
+        showRecommendationBox,
+        setShowRecommendationBox,
       }}
     >
       {children}

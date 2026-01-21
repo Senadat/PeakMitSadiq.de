@@ -11,11 +11,13 @@ const aboutSections = [
     reverse: false,
   },
   {
-    img: "/about1.jpg",
+    img: "/hero2.jpg",
     alt: "About Me Image",
-    text: `Als zertifizierter Trainer habe ich mit Leistungssportlern, mit Senioren nach Operationen und mit Menschen gearbeitet, die einfach wieder fitter und schmerzfreier leben möchten. Während meiner Zeit in einer Physiotherapie Praxis konnte ich außerdem wertvolle Einblicke in Rehabilitation und Mobilität sammeln.`,
+    text: `Als zertifizierter Trainer habe ich mit Leistungssportlern, mit Senioren nach Operationen und mit Menschen, die einfach wieder fitter und schmerzfreier leben möchten gearbeitet. 
+Während meiner Zeit in einer Physiotherapie Praxis konnte ich außerdem wertvolle Einblicke in Rehabilitation und Mobilität sammeln.`,
     reverse: true,
   },
+
   {
     img: "/hero3.jpg",
     alt: "About Me Image",
@@ -36,7 +38,7 @@ export default function About() {
         {aboutSections.map((section, index) => (
           <motion.div
             key={index}
-            className={`flex flex-col ${
+            className={` flex flex-col ${
               section.reverse ? "md:flex-row-reverse" : "md:flex-row"
             } justify-evenly items-center gap-10 mt-16`}
             initial={{ opacity: 0, y: 50 }}

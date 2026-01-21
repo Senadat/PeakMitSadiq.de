@@ -1,41 +1,25 @@
 import { GenderType } from "@/types/hero";
 import CustomInput from "../customInput";
+import styles from "./section.module.css";
 
 export default function SectionB() {
   const options: GenderType[] = ["Männlich", "Weiblich", "Divers"];
 
   return (
-    <div
-      className="
-        bg-transparent
-        flex flex-col
-        gap-4 sm:gap-5 lg:gap-6
-      "
-    >
+    <div className={`${styles.parent}`}>
       {/* Heading */}
-      <p
-        style={{
-          fontSize: "clamp(18px, 2vw, 40px)",
-        }}
-        className="
-          font-semibold text-center lg:text-left
-       
-        "
-      >
-        Ich bin
-      </p>
+      <p className={`${styles.heading}`}>Ich bin</p>
 
       {/* Options */}
-      <div
-        className="
-          flex flex-col items-center justify-center
-          gap-2 sm:gap-3 lg:gap-4
-        "
-      >
+      <div className={`${styles.options}`}>
         {options.map((opt) => (
           <CustomInput key={opt} field="b" value={opt} />
         ))}
       </div>
+
+      <p className={`${styles.notice}`}>
+        Deine Antworten helfen mir, deine Situation richtig einzuordnen.
+      </p>
     </div>
   );
 }

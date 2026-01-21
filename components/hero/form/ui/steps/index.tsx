@@ -1,6 +1,7 @@
 import { useApp } from "@/context";
+import { b } from "framer-motion/m";
 
-export default function Steps() {
+export default function Steps({ length }: { length: number }) {
   const { currentFormIndex, setCurrentFormIndex, setCurrentHeroImage } =
     useApp();
   const backgroundImages = [
@@ -15,13 +16,17 @@ export default function Steps() {
       // const formattedForm = Object.values(formData);
       return;
     }
-    setCurrentHeroImage(backgroundImages[value]);
+
+    if (value < backgroundImages.length - 1) {
+      setCurrentHeroImage(backgroundImages[value]);
+    }
+
     setCurrentFormIndex(value);
   };
 
   return (
     <div className={`flex items-center gap-3`}>
-      {Array.from({ length: 4 }, (_, i) => (
+      {Array.from({ length }, (_, i) => (
         <span
           onClick={() => handleClick(i)}
           key={`step-${i}`}

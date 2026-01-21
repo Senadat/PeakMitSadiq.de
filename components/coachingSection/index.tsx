@@ -24,7 +24,7 @@ export default function Coaching() {
         Nach einem vertraulichen Gespräch über deine Ziele und deinen Werdegang
         <br /> erhältst du einen maßgeschneiderten Trainingsplan. In unseren 1:1
         Sessions im
-        <br /> Gym begleite ich dich auf deinem Weg, dein Individuelles Ziel zu
+        <br /> Gym begleite ich dich auf deinem Weg, dein individuelles Ziel zu
         erreichen.
         <br /> Mit enger Beratung und kontinuierlicher Unterstützung sorgen wir
         dafür, dass du

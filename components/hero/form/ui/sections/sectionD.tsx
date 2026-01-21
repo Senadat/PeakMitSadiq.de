@@ -1,5 +1,6 @@
 import { CommitmentType } from "@/types/hero";
 import CustomInput from "../customInput";
+import styles from "./section.module.css";
 
 export default function SectionD() {
   const options: CommitmentType[] = [
@@ -8,38 +9,23 @@ export default function SectionD() {
   ];
 
   return (
-    <div
-      className="
-        bg-transparent
-        flex flex-col justify-center
-        gap-4 sm:gap-5 lg:gap-4
-      "
-    >
+    <div className={`${styles.parent}`}>
       {/* Heading */}
-      <p
-        style={{
-          fontSize: "clamp(18px, 2vw, 40px)",
-        }}
-        className="
-          font-semibold text-center lg:text-left
-          
-        "
-      >
+      <p className={`${styles.heading}`}>
         Bereit, Ausreden abzulegen und in deinen persönlichen Peak zu
         investieren?
       </p>
 
       {/* Options */}
-      <div
-        className="
-          flex flex-col items-center justify-center
-          gap-2 sm:gap-3 lg:gap-4 
-        "
-      >
+      <div className={`${styles.options}`}>
         {options.map((opt) => (
           <CustomInput key={opt} field="d" value={opt} />
         ))}
       </div>
+
+      <p className={`${styles.notice}`}>
+        Deine Antworten helfen mir, deine Situation richtig einzuordnen.
+      </p>
     </div>
   );
 }

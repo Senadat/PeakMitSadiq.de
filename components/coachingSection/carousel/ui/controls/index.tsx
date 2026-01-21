@@ -6,8 +6,8 @@ export default function CarouselControls() {
 
   return (
     <div className="flex justify-center items-center gap-4 py-2">
-      <Button isLeft onClick={next} />
-      <Button onClick={prev} />
+      <Button isLeft onClick={prev} />
+      <Button onClick={next} />
     </div>
   );
 }

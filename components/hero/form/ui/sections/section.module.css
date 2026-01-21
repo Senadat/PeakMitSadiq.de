@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.parent {
+  @apply bg-transparent flex flex-col gap-4 sm:gap-5 lg:gap-6;
+}
+
+.heading {
+  @apply font-semibold text-[clamp(18px,2vw,40px)] text-center lg:text-left;
+}
+
+.options {
+  @apply flex flex-col items-center justify-center gap-2 sm:gap-3 lg:gap-4;
+}
+
+.notice {
+  @apply text-[clamp(14px,1.2vw,22px)] lg:text-left mx-auto;
+}

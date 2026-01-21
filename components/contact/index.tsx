@@ -97,11 +97,6 @@ export default function Contact() {
       setMessage("");
       setErrors({});
 
-      console.table({
-        ...payload,
-        token: process.env.NEXT_PUBLIC_FORM_TOKEN,
-      });
-
       try {
         await fetch("/api/saveForm", {
           method: "POST",
@@ -139,7 +134,7 @@ export default function Contact() {
           <div className="w-full lg:w-1/2 flex justify-center">
             <div className="relative w-full lg:h-full max-w-md aspect-4/5">
               <Image
-                src="/about1.jpg"
+                src="/hero2.jpg"
                 alt="contact form image"
                 fill
                 className="object-cover rounded-lg"

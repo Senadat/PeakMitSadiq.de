@@ -7,19 +7,21 @@ import SectionA from "./ui/sections/sectionA";
 import SectionB from "./ui/sections/sectionB";
 import SectionC from "./ui/sections/sectionC";
 import SectionD from "./ui/sections/sectionD";
+import SectionE from "./ui/sections/sectionE";
 
 export default function HeroForm() {
-  const { currentFormIndex } = useApp();
+  const { currentFormIndex, sendingEmail } = useApp();
 
   const formSections = [
-    <SectionA key="section-a" />,
-    <SectionB key="section-b" />,
-    <SectionC key="section-c" />,
-    <SectionD key="section-d" />,
+    <SectionA key="section-a-form" />,
+    <SectionB key="section-b-form" />,
+    <SectionC key="section-c-form" />,
+    <SectionD key="section-d-form" />,
+    <SectionE key="section-e-form" />,
   ];
 
   return (
-    <div className="flex flex-col gap-4 justify-center items-center">
+    <div className="flex flex-col flex-none w-full gap-4 justify-center items-center">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentFormIndex}
@@ -33,7 +35,7 @@ export default function HeroForm() {
         </motion.div>
       </AnimatePresence>
 
-      <Steps />
+      {!sendingEmail && <Steps length={formSections.length} />}
     </div>
   );
 }

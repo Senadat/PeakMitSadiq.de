@@ -11,7 +11,7 @@ const CarouselSteps: React.FC<StepsProps> = ({ totalSteps, currentStep }) => {
   const { handleStepClick, transitionDuration, isChangingStep } = useCarousel();
 
   return (
-    <div className="flex justify-center items-center gap-3 flex-row-reverse">
+    <div className="flex justify-center items-center gap-3">
       {Array.from({ length: totalSteps }).map((_, index) => (
         <div
           onClick={() => {
