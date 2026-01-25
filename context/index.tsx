@@ -1,7 +1,6 @@
 "use client";
 
 import { HeroFormData } from "@/types/hero";
-import { PricingCardType } from "@/types/pricing";
 import {
   createContext,
   useContext,
@@ -24,10 +23,14 @@ interface AppContextValue {
   setShowSuccess: (value: boolean) => void;
   showRecommendation: boolean;
   setShowRecommendation: (value: boolean) => void;
+  scrollToRecommendation: boolean;
+  setScrollToRecommendation: (value: boolean) => void;
   showRecommendationBox: boolean;
   setShowRecommendationBox: (value: boolean) => void;
-  selectedPricing: PricingCardType | null;
-  setSelectedPricing: (value: PricingCardType) => void;
+  hideRecommendationBox: boolean;
+  setHideRecommendationBox: (value: boolean) => void;
+  selectedPricing: string | null;
+  setSelectedPricing: (value: string) => void;
   sendingEmail: boolean;
   setSendingEmail: (value: boolean) => void;
   updateFormField: (field: keyof HeroFormData, value: string) => void;
@@ -63,20 +66,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showRecommendation, setShowRecommendation] = useState(false);
   const [showRecommendationBox, setShowRecommendationBox] = useState(false);
-  const [selectedPricing, setSelectedPricing] = useState<PricingCardType>({
-    id: "personal-gym-30",
-    price: 41.65,
-    package: `1:1 Personal Training
-Studio
-(30 Minuten)`,
-    plan: "personal",
-    duration: 30,
-    features: [
-      "30 Min intensives Training im PT-Studio",
-      "Individueller Trainingsplan",
-      "Technik-Coaching während der Einheit",
-    ],
-  });
+  const [hideRecommendationBox, setHideRecommendationBox] = useState(false);
+  const [scrollToRecommendation, setScrollToRecommendation] = useState(false);
+  const [selectedPricing, setSelectedPricing] = useState("personal-gym-30");
 
   // form update logic
   const updateFormField = useCallback(
@@ -138,6 +130,10 @@ Studio
         setShowRecommendation,
         showRecommendationBox,
         setShowRecommendationBox,
+        hideRecommendationBox,
+        setHideRecommendationBox,
+        scrollToRecommendation,
+        setScrollToRecommendation,
       }}
     >
       {children}

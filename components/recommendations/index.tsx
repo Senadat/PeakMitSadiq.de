@@ -1,60 +1,53 @@
 import { useApp } from "@/context";
 import { createRecommendation } from "@/lib/utils/createRecommendation";
 import RecommendationContent from "./content";
-// import { useEffect } from "react";
+import { useEffect } from "react";
 import { scrollToId } from "@/lib/utils/scrollToId";
 import { AnimatePresence, motion } from "framer-motion";
-import RecommendationBox from "./box";
 
 export default function Recommendations() {
-  const {
-    formData,
-    showRecommendation,
-    showRecommendationBox,
-    setShowRecommendation,
-    setShowRecommendationBox,
-  } = useApp();
+  const { formData, showRecommendation, setShowRecommendationBox } = useApp();
   const recommendation = createRecommendation(formData);
-
-  if (!showRecommendation) {
-    return null;
-  }
 
   const handleViewPackage = () => {
     scrollToId("pricing");
   };
 
   const handleReadLater = () => {
-    setShowRecommendation(false);
-    setShowRecommendationBox(true);
+    scrollToId("clients");
   };
 
-  // useEffect(() => {
-  //   const onScroll = () => {
-  //     const el = document.getElementById("recommendation");
-  //     if (!el) return;
+  const onScroll = () => {
+    const el = document.getElementById("recommendation");
+    if (!el) return;
 
-  //     const rect = el.getBoundingClientRect();
-  //     if (rect.bottom < 100) {
-  //       setShowRecommendation(false);
-  //       setShowRecommendationBox(true);
-  //     }
-  //   };
+    const rect = el.getBoundingClientRect();
+    if (rect.bottom < 100) {
+      setShowRecommendationBox(true);
+    } else {
+      setShowRecommendationBox(false);
+    }
+  };
 
-  //   window.addEventListener("scroll", onScroll);
-  //   return () => window.removeEventListener("scroll", onScroll);
-  // }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (!showRecommendation) {
+    return null;
+  }
 
   return (
-    <AnimatePresence>
-      {showRecommendation && (
-        <motion.section
+    <div id="recommendation" className="p-[5%]">
+      <AnimatePresence>
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 40 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           layout
-          className="w-full space-y-10 px-4"
+          className="w-full space-y-10"
         >
           {/* header */}
           <h2 className="text-[6vw] text-primary font-semibold text-center mb-4">
@@ -77,6 +70,7 @@ export default function Recommendations() {
       hover:scale-105 hover:shadow-lg
       active:scale-95
       focus:outline-none focus:ring-2 focus:ring-primary/40
+      min-w-fit max-w-75 w-1/2
     "
                 >
                   Paket ansehen
@@ -88,7 +82,7 @@ export default function Recommendations() {
       rounded-md
       text-[clamp(18px,2vw,36px)]
       bg-transparent border-2 border-primary text-primary
-      py-2 px-6
+      py-2 px-6 min-w-fit max-w-75 w-1/2
       transition-all duration-300 ease-out
       hover:bg-primary hover:text-white hover:scale-105
       active:scale-95
@@ -107,8 +101,8 @@ export default function Recommendations() {
               </div>
             </>
           )}
-        </motion.section>
-      )}
-    </AnimatePresence>
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }

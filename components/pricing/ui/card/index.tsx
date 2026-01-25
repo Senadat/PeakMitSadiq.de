@@ -7,43 +7,55 @@ import { motion } from "framer-motion";
 export default function PricingCard({
   pricing,
   isCenter = false,
+  isRecommendation = false,
 }: {
   pricing: PricingCardType;
   isCenter?: boolean;
+  isRecommendation?: boolean;
 }) {
   const { setOpenPricingModal, setSelectedPricing, selectedPricing } = useApp();
 
   function handleClick() {
-    setSelectedPricing(pricing);
+    setSelectedPricing(pricing.id);
     setOpenPricingModal(true);
   }
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       whileHover={{
-        // y: -8,
         scale: 1.01,
       }}
-      className={`flex flex-col items-center gap-4 rounded-xl max-w-90 py-4 px-6 md:py-6 md:px-8 transition-colors ${
-        pricing.id === selectedPricing?.id
+      className={`relative flex flex-col items-center gap-4 rounded-xl max-w-90 py-4 px-6 md:py-6 md:px-8 transition-all ${
+        pricing.id === selectedPricing
           ? "border-2 border-primary ring-6 ring-primary/10"
           : ""
       } ${
-        isCenter
-          ? " bg-[#EBEBEB] text-black shadow-xl"
-          : "bg-[#EBEBEB33] text-[#EBEBEB]"
+        isRecommendation
+          ? "bg-white text-black shadow-2xl"
+          : isCenter
+            ? " bg-[#EBEBEB] text-black shadow-xl"
+            : "bg-[#EBEBEB33] text-[#EBEBEB]"
       }`}
     >
-      <p className="whitespace-pre-line  text-[clamp(18px,1.5vw,24px)]  text-primary text-center">
+      {/* ✅ ADD: Recommended badge */}
+      {isRecommendation && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-2xl bg-primary animate-pulse px-4 py-1 text-sm font-semibold text-white shadow-md">
+          Empfohlen
+        </div>
+      )}
+
+      <p className="whitespace-pre-line text-[clamp(18px,1.5vw,24px)] text-primary text-center">
         {pricing.package}
       </p>
 
       <motion.p
-        className="font-bold text-[clamp(32px,4vw,64px)]
-"
+        className="font-bold text-[clamp(32px,4vw,64px)]"
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.1 }}
@@ -57,7 +69,7 @@ export default function PricingCard({
         {pricing.features.map((f, i) => (
           <motion.li
             key={f}
-            className=" list-disc"
+            className="list-disc"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.15 + i * 0.05 }}
@@ -71,7 +83,9 @@ export default function PricingCard({
         onClick={handleClick}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="cursor-pointer truncate w-full text-[20px] md:text-[22px] xl:text-[26px] max-w-[75%] bg-primary text-white px-4 py-2 rounded-md"
+        className={`cursor-pointer truncate w-full text-[20px] md:text-[22px] xl:text-[26px] max-w-[75%] px-4 py-2 rounded-md text-white ${
+          isRecommendation ? "bg-primary shadow-lg" : "bg-primary"
+        }`}
       >
         Jetzt starten!
       </motion.button>

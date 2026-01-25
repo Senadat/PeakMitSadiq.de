@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useApp } from "@/context";
 import FormInput from "@/components/input";
 import { SheetsPayload } from "@/types/sheets";
+import { gymOptions, homeOptions, personalOptions } from "@/lib/data/pricing";
 
 interface BookingData {
   name: string;
@@ -45,16 +46,17 @@ export default function BookingPayment() {
   const [isValidatingLocation, setIsValidatingLocation] = useState(false);
   const [error, setError] = useState("");
 
+  const pricingOptions = [...gymOptions, ...personalOptions, ...homeOptions];
+  const selectedPackage = pricingOptions.find(
+    (opt) => opt.id === selectedPricing,
+  );
+
   // Generate available time slots (30-min intervals)
-  const generateTimeSlots = (dayOfWeek: number): string[] => {
+  const generateTimeSlots = (): string[] => {
     const slots: string[] = [];
 
-    // Sunday (0) is closed
-    if (dayOfWeek === 0) return slots;
-
-    // Saturday (6): 9:00-18:00
-    const startHour = dayOfWeek === 6 ? 9 : 8;
-    const endHour = dayOfWeek === 6 ? 18 : 20;
+    const startHour = 6; // 06:00
+    const endHour = 23; // 23:00 (exclusive)
 
     for (let hour = startHour; hour < endHour; hour++) {
       slots.push(`${hour.toString().padStart(2, "0")}:00`);
@@ -70,7 +72,7 @@ export default function BookingPayment() {
     "home-weight-loss",
     "personal-home-60",
     "personal-home-30",
-  ].includes(selectedPricing?.id ?? "");
+  ].includes(selectedPackage?.id ?? "");
 
   // Get min and max date (today to 2 weeks from now)
   const getMinDate = () => {
@@ -95,7 +97,7 @@ export default function BookingPayment() {
   const updateDateTime = (
     index: number,
     field: "date" | "time",
-    value: string
+    value: string,
   ) => {
     const newSelections = [...dateTimeSelections];
     newSelections[index][field] = value;
@@ -113,7 +115,7 @@ export default function BookingPayment() {
   const getTimeSlotsForDate = (dateString: string): string[] => {
     if (!dateString) return [];
     const date = new Date(dateString);
-    return generateTimeSlots(date.getDay());
+    return generateTimeSlots();
   };
 
   // Haversine formula for distance calculation
@@ -121,7 +123,7 @@ export default function BookingPayment() {
     lat1: number,
     lon1: number,
     lat2: number,
-    lon2: number
+    lon2: number,
   ): number => {
     const R = 6371; // Earth's radius in km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -153,13 +155,13 @@ export default function BookingPayment() {
       // Try searching with the exact address first
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          address
+          address,
         )}&limit=1&countrycodes=de`,
         {
           headers: {
             "User-Agent": "PeakMitSadiq-Booking-App",
           },
-        }
+        },
       );
 
       const data = await response.json();
@@ -171,7 +173,7 @@ export default function BookingPayment() {
           iserlohnLat,
           iserlohnLon,
           userLat,
-          userLon
+          userLon,
         );
 
         console.log(
@@ -179,14 +181,14 @@ export default function BookingPayment() {
           data[0].display_name,
           "Distance:",
           distance.toFixed(1),
-          "km"
+          "km",
         );
 
         if (distance > 30) {
           setLocationError(
             `Der Standort ist ${distance.toFixed(
-              1
-            )} km entfernt. Der maximale Umkreis beträgt 30 km von Iserlohn.`
+              1,
+            )} km entfernt. Der maximale Umkreis beträgt 30 km von Iserlohn.`,
           );
           setIsValidatingLocation(false);
           return false;
@@ -197,7 +199,7 @@ export default function BookingPayment() {
         return true;
       } else {
         setLocationError(
-          "Der Standort konnte nicht gefunden werden. Bitte geben Sie eine vollständige Adresse in Deutschland ein."
+          "Der Standort konnte nicht gefunden werden. Bitte geben Sie eine vollständige Adresse in Deutschland ein.",
         );
         setIsValidatingLocation(false);
         return false;
@@ -205,7 +207,7 @@ export default function BookingPayment() {
     } catch (error) {
       console.error("Location validation error:", error);
       setLocationError(
-        "Bei der Standortüberprüfung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+        "Bei der Standortüberprüfung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
       );
       setIsValidatingLocation(false);
       return false;
@@ -250,10 +252,10 @@ export default function BookingPayment() {
       available_dates: bookingData.available_dates
         ? bookingData.available_dates.join(", ")
         : null,
-      package_name: selectedPricing?.package ?? null,
-      package_price: selectedPricing ? `€${selectedPricing.price}` : null,
+      package_name: selectedPackage?.package ?? null,
+      package_price: selectedPricing ? `€${selectedPackage?.price}` : null,
       session_duration: selectedPricing
-        ? `${selectedPricing.duration} Minuten`
+        ? `${selectedPackage?.duration} Minuten`
         : null,
       message: bookingData.description ?? null,
       goal: formData.a ?? null,
@@ -337,7 +339,7 @@ export default function BookingPayment() {
             <div className="flex justify-between items-center">
               <span className="text-white">Paket:</span>
               <span className="font-semibold text-white">
-                {selectedPricing?.package}
+                {selectedPackage?.package}
               </span>
             </div>
             {/* <div className="flex justify-between items-center">
@@ -349,14 +351,14 @@ export default function BookingPayment() {
             <div className="flex justify-between items-center">
               <span className="text-white">Dauer pro Session:</span>
               <span className="font-semibold text-white">
-                {selectedPricing?.duration ?? 60} Minuten
+                {selectedPackage?.duration ?? 60} Minuten
               </span>
             </div>
             <div className="border-t border-gray-600 pt-3 mt-3">
               <div className="flex justify-between items-center">
                 <span className="text-white text-lg">Gesamtpreis:</span>
                 <span className="text-3xl font-bold text-primary">
-                  €{selectedPricing?.price}
+                  €{selectedPackage?.price}
                 </span>
               </div>
             </div>
@@ -551,9 +553,7 @@ export default function BookingPayment() {
               </div>
             ))}
 
-            <p className="text-sm text-gray-400">
-              Öffnungszeiten: Mo-Fr 08:00-20:00, Sa 09:00-18:00, So geschlossen
-            </p>
+            <p className="text-sm text-gray-400">Öffnungszeiten </p>
           </div>
 
           <div className="relative">

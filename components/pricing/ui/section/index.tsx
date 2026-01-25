@@ -1,5 +1,6 @@
 import { PricingCardType } from "@/types/pricing";
 import PricingCard from "../card";
+import { useApp } from "@/context";
 
 export default function PriceSection({
   title,
@@ -10,6 +11,12 @@ export default function PriceSection({
   showCenter?: boolean;
   options: PricingCardType[];
 }) {
+  const { showRecommendation } = useApp();
+
+  function isRecommended(id: string) {
+    return showRecommendation && id === "gym-pain-free";
+  }
+
   return (
     <div className="flex flex-col items-center gap-10 md:gap-12 lg:gap-20">
       {title && (
@@ -24,6 +31,7 @@ export default function PriceSection({
             key={`pricing-card-${i}`}
             pricing={opt}
             isCenter={showCenter === true && i === 1}
+            isRecommendation={isRecommended(opt.id)}
           />
         ))}
       </div>

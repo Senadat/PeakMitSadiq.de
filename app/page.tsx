@@ -10,12 +10,9 @@ import Recommendations from "@/components/recommendations";
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="w-full">
       <Hero />
-      <div id="recommendation">
-        {" "}
-        <Recommendations />
-      </div>
+      <Recommendations />
       <Portfolio />
       <About />
       <Coaching />

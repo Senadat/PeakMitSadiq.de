@@ -3,12 +3,17 @@
 import { useApp } from "@/context";
 import HeroForm from "./form";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { scrollToId } from "@/lib/utils/scrollToId";
 
 export default function Hero() {
-  const [scrollToRecommendation, setScrollToRecommendation] = useState(false);
-  const { currentHeroImage, hasCompletedForm, showRecommendation } = useApp();
+  const {
+    currentHeroImage,
+    hasCompletedForm,
+    showRecommendation,
+    scrollToRecommendation,
+    setScrollToRecommendation,
+  } = useApp();
   const isEmailCollected = hasCompletedForm && showRecommendation;
 
   useEffect(() => {
@@ -22,10 +27,12 @@ export default function Hero() {
 
   return (
     <div
+      id="hero"
       // style={{
       //   opacity: showRecommendation ? 0.2 : 1,
       //   transition: "opacity 300ms ease",
       // }}
+
       className="w-full min-h-screen relative overflow-hidden "
     >
       {/* Background images with fade transition */}

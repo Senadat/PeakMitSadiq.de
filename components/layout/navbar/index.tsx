@@ -10,7 +10,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("clients");
-  const [showNav, setShowNav] = useState(true);
 
   const lastScrollY = useRef(0);
 
@@ -18,12 +17,6 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Show navbar when scrolling up, hide when scrolling down
-      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-        setShowNav(false);
-      } else {
-        setShowNav(true);
-      }
       lastScrollY.current = currentScrollY;
 
       setScrolled(currentScrollY > 50);

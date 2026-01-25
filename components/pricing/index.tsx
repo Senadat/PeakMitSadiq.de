@@ -1,6 +1,6 @@
 import { PricingPlan } from "@/types/pricing";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SectionHeading from "../heading";
 import PricingSection from "./ui/section";
 import { gymOptions, homeOptions, personalOptions } from "@/lib/data/pricing";
@@ -11,8 +11,19 @@ import BookingPayment from "./ui/paymentModal";
 import BookingConfirmation from "./ui/success";
 
 export default function Pricing() {
-  const [tab, setTab] = useState<PricingPlan>("home");
-  const { openPricingModal, setOpenPricingModal, showSuccess } = useApp();
+  const [tab, setTab] = useState<PricingPlan>("personal");
+  const {
+    showRecommendation,
+    openPricingModal,
+    setOpenPricingModal,
+    showSuccess,
+  } = useApp();
+
+  useEffect(() => {
+    if (showRecommendation) {
+      setTab("gym");
+    }
+  }, [showRecommendation]);
 
   const tabOptions = [
     {
@@ -32,6 +43,8 @@ export default function Pricing() {
   function changeTab(t: PricingPlan) {
     setTab(t);
   }
+
+  function checkRecommendation() {}
 
   const containerVariants = {
     hidden: { opacity: 0 },

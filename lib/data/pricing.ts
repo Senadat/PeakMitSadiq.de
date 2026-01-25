@@ -127,7 +127,7 @@ Studio
   },
   {
     id: "personal-home-60",
-    price: 99,
+    price: 99.4,
     package: `1:1 Personal Training
 Zuhause / Outdoor
 (60 Minuten)`,
@@ -155,7 +155,7 @@ Studio
   },
   {
     id: "personal-home-30",
-    price: 49,
+    price: 49.65,
     package: `1:1 Personal Training
 Zuhause / Outdoor
 (30 Minuten)`,

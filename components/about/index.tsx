@@ -11,7 +11,7 @@ const aboutSections = [
     reverse: false,
   },
   {
-    img: "/hero2.jpg",
+    img: "/about2.jpeg",
     alt: "About Me Image",
     text: `Als zertifizierter Trainer habe ich mit Leistungssportlern, mit Senioren nach Operationen und mit Menschen, die einfach wieder fitter und schmerzfreier leben möchten gearbeitet. 
 Während meiner Zeit in einer Physiotherapie Praxis konnte ich außerdem wertvolle Einblicke in Rehabilitation und Mobilität sammeln.`,
@@ -57,13 +57,14 @@ export default function About() {
                 aspect-4/5
                 border-3 
                 rounded-lg
+                group overflow-hidden
               "
             >
               <Image
                 src={section.img}
                 alt={section.alt}
                 fill
-                className="object-cover rounded-lg"
+                className="object-cover rounded-lg  transition-transform duration-700 ease-out group-hover:scale-110"
                 sizes="(max-width: 768px) 100vw, 420px"
               />
             </div>

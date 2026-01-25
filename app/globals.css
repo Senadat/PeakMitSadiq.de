@@ -6,6 +6,11 @@
   --color-gray2: #b9b9b9;
 }
 
+html {
+  color: white;
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }

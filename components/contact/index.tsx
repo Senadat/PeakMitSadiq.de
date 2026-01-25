@@ -134,7 +134,7 @@ export default function Contact() {
           <div className="w-full lg:w-1/2 flex justify-center">
             <div className="relative w-full lg:h-full max-w-md aspect-4/5">
               <Image
-                src="/hero2.jpg"
+                src="/contact1.jpeg"
                 alt="contact form image"
                 fill
                 className="object-cover rounded-lg"

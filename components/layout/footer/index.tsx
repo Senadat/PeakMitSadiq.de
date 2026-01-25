@@ -16,11 +16,11 @@ export default function Footer() {
       icon: <Image src={"/instagram.svg"} alt="instagram icon" fill />,
       link: `https://www.instagram.com/sadiq.aj/`,
     },
-    {
-      title: "whatsapp",
-      icon: <Image src={"/whatsapp.svg"} alt="whatsapp icon" fill />,
-      link: `https://api.whatsapp.com/send?phone=4915734693269`,
-    },
+    // {
+    //   title: "whatsapp",
+    //   icon: <Image src={"/whatsapp.svg"} alt="whatsapp icon" fill />,
+    //   link: `https://api.whatsapp.com/send?phone=4915734693269`,
+    // },
     // {
     //   title: "x",
     //   icon: <Image src={"/twitter.svg"} alt="x icon" fill />,

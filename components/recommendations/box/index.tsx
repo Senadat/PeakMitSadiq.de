@@ -12,26 +12,25 @@ export default function RecommendationBox({
   const {
     showRecommendationBox,
     setShowRecommendationBox,
-    setShowRecommendation,
+    setHideRecommendationBox,
+    hideRecommendationBox,
   } = useApp();
 
-  if (!showRecommendationBox) return null;
+  if (!showRecommendationBox || hideRecommendationBox) return null;
 
   // ---- handlers ----
   const handleClose = () => {
+    setHideRecommendationBox(true);
     setShowRecommendationBox(false);
-    setShowRecommendation(true);
   };
 
   const handleContactClick = () => {
+    setHideRecommendationBox(true);
+    setShowRecommendationBox(false);
     scrollToId("contact");
-    // setShowRecommendation(true);
-    // setShowRecommendationBox(false);
   };
 
   const handleBackToRecommendation = () => {
-    setShowRecommendationBox(false);
-    setShowRecommendation(true);
     scrollToId("recommendation");
   };
 
@@ -57,13 +56,11 @@ export default function RecommendationBox({
       </span>
 
       {/* Text */}
-      <div className="text-xl text-white text-center">
-        Hallo, ich empfehle dir aufgrund deiner Antworten das
-        <br />
+      <div className="text-xl text-white ">
+        Aufgrund deiner Antworten empfehle ich dir dieses Paket: <br />
         <span className="text-primary text-[2vw]">
           {recommendedPackage}
         </span>{" "}
-        Paket.
       </div>
 
       {/* Actions */}

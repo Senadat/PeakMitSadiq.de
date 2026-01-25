@@ -10,7 +10,7 @@ export default function ClientLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="bg-background w-full relative">
+    <div className="bg-background text-white w-full relative">
       <Navbar />
       {children}
       <Footer />

@@ -18,7 +18,6 @@ export default function EmailForm() {
     setShowRecommendation,
     formData,
     setHasCompletedForm,
-    sendingEmail,
     setSendingEmail,
   } = useApp();
   const [loading, setLoading] = useState(false);
@@ -82,23 +81,30 @@ export default function EmailForm() {
     <div className={`${styles.parent}`}>
       {/* Heading */}
       <p className={`${styles.heading}`}>
-        {loading
-          ? "Danke für dein Vertrauen! Deine persönliche Empfehlung wird vorbereitet"
-          : "Auf Basis deiner Antworten formuliere ich jetzt meine erste Trainingsempfehlung für dich. Ich brauche deine E-Mail, damit ich dir eine tiefere Beratung anbieten kann."}
+        {loading ? (
+          "Danke für dein Vertrauen! Deine persönliche Empfehlung wird vorbereitet"
+        ) : (
+          <>
+            Auf Basis deiner Antworten formuliere ich jetzt meine erste
+            Trainingsempfehlung für dich. <br />
+            Ich brauche deine E-Mail, damit ich dir eine tiefere Beratung
+            anbieten kann.
+          </>
+        )}
       </p>
 
       {/* Options */}
       {loading ? (
-        <div className="flex gap-2 items-center justify-center w-full">
-          <div className=" flex-none">
+        <div className="flex flex-col-reverse sm:flex-row gap-2 items-center justify-center w-full max-w-full overflow-hidden px-4">
+          <div className="flex-none">
             <Spinner />
           </div>
-          <p className="text-[#B9B9B9] flex-none md:text-xl text-wrap">
+          <p className="text-[#B9B9B9] flex-none md:text-xl text-wrap wrap-break-word">
             Ich bereite gerade deine erste Trainingsempfehlung vor…
           </p>
         </div>
       ) : (
-        <div className={`flex flex-col gap-2`}>
+        <div className={`flex flex-col gap-2 w-full`}>
           <EmailInput onSubmit={handleSubmit} error={error} />
           {error && <p className={`${styles.notice} text-red-500!`}>{error}</p>}
           <p className={`${styles.notice}`}>
@@ -123,7 +129,7 @@ function EmailInput({ onSubmit }: EmailInputProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center gap-2 rounded-2xl bg-[#D9D9D933] border px-3 py-1 focus-within:ring-2 focus-within:ring-brand-primary"
+      className="flex items-center gap-2 rounded-2xl bg-[#D9D9D933] border px-3 py-1 focus-within:ring-2 focus-within:ring-brand-primary w-full max-w-full"
     >
       {/* Mail icon */}
       <svg
@@ -132,7 +138,7 @@ function EmailInput({ onSubmit }: EmailInputProps) {
         viewBox="0 -960 960 960"
         width="35px"
         fill="#B9B9B9"
-        className="w-10 h-7.5  md:w-11.25 md:h-8.75"
+        className="w-6 h-6 md:w-10 md:h-8 shrink-0"
       >
         <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
       </svg>
@@ -144,15 +150,15 @@ function EmailInput({ onSubmit }: EmailInputProps) {
         value={email}
         onChange={(e) => setEmail(e.target.value.toLocaleLowerCase())}
         placeholder="Deine E-Mail-Adresse"
-        className="flex-1 bg-transparent  md:text-lg lg:text-xl text-white outline-none  placeholder:text-[#B9B9B9]"
+        className="flex-1 bg-transparent text-sm md:text-lg lg:text-xl text-white outline-none placeholder:text-[#B9B9B9] min-w-0"
       />
       {/* Submit button */}
       <button
         type="submit"
-        className="rounded-lg p-2 mb-2 text-foreground-secondary transition hover:bg-card-hover hover:text-foreground disabled:opacity-50"
+        className="rounded-lg p-2 text-foreground-secondary transition hover:bg-card-hover hover:text-foreground disabled:opacity-50 shrink-0"
         aria-label="Submit email"
       >
-        <motion.span className="flex items-center relative justify-center w-8 h-8 leading-0">
+        <motion.span className="flex items-center relative justify-center w-6 h-6 md:w-8 md:h-8 leading-0">
           <Image src={"/send-icon.svg"} fill alt="send icon" />
         </motion.span>
       </button>
