@@ -318,6 +318,33 @@ export default function BookingPayment() {
     !locationError &&
     !isValidatingLocation;
 
+  if (!selectedPackage) {
+    return (
+      <div className="flex items-center justify-center h-full p-6 text-center">
+        <div className="max-w-md">
+          <h2 className="text-2xl font-bold text-primary mb-3">
+            Kein Paket ausgewählt
+          </h2>
+          <p className="text-gray-300 mb-6">
+            Es wurde kein gültiges Paket gefunden. Bitte gehe zurück und wähle
+            erneut ein Trainingspaket aus.
+          </p>
+          <button
+            onClick={() => window.history.back()}
+            className="bg-primary text-white px-5 py-3 rounded-xl hover:bg-primary/90"
+          >
+            Zurück zur Paketauswahl
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const formattedPrice = new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+  }).format(selectedPackage?.price);
+
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-y-auto bg-background">
       {/* Section 1: Package Info */}
@@ -358,7 +385,7 @@ export default function BookingPayment() {
               <div className="flex justify-between items-center">
                 <span className="text-white text-lg">Gesamtpreis:</span>
                 <span className="text-3xl font-bold text-primary">
-                  €{selectedPackage?.price}
+                  €{formattedPrice}
                 </span>
               </div>
             </div>

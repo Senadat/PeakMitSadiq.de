@@ -20,6 +20,11 @@ export default function PricingCard({
     setOpenPricingModal(true);
   }
 
+  const formattedPrice = new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+  }).format(pricing.price);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -60,7 +65,7 @@ export default function PricingCard({
         animate={{ scale: 1 }}
         transition={{ delay: 0.1 }}
       >
-        {pricing.price}€
+        {formattedPrice}
       </motion.p>
 
       <hr className="w-[50%] bg-[#FFFFFF80] h-0.5" />

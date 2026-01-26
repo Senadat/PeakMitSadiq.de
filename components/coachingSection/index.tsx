@@ -48,7 +48,7 @@ export default function Coaching() {
             cardGap={1}
             cardWidth={30}
           >
-            <CoachingCarousel left={`calc(${-30 * 7.5}%)`} />
+            <CoachingCarousel left={`calc(${-30 * 7.6}%)`} />
           </CarouselProvider>
         }
       </div>

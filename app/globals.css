@@ -23,6 +23,13 @@ section {
   padding: 200px 40px;
 }
 
+input,
+textarea,
+select,
+button {
+  font-size: 16px;
+}
+
 /* Tablets */
 @media (max-width: 1024px) {
   section {
