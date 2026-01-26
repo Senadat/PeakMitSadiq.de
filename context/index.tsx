@@ -7,6 +7,7 @@ import {
   useState,
   useCallback,
   ReactNode,
+  useEffect,
 } from "react";
 
 export type SectionId = string;
@@ -37,20 +38,23 @@ interface AppContextValue {
   setCurrentFormIndex: (index: number) => void;
   setHasCompletedForm: (value: boolean) => void;
   setCurrentHeroImage: (value: string) => void;
+  imagesLoaded: boolean;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
 
-export function AppProvider({ children }: { children: ReactNode }) {
-  const backgroundImages = [
-    "/hero8.jpg",
-    "/hero7.jpg",
-    "/coaching3.jpg",
-    "/hero4.jpg",
-  ];
+// Move this outside component to prevent recreation
+const BACKGROUND_IMAGES = [
+  "/hero8.jpg",
+  "/hero7.jpg",
+  "/coaching3.jpg",
+  "/hero4.jpg",
+];
 
+export function AppProvider({ children }: { children: ReactNode }) {
   const [hasCompletedForm, setHasCompletedForm] = useState(false);
   const [currentFormIndex, setCurrentFormIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   const [formData, setFormData] = useState<HeroFormData>({
     a: "",
@@ -61,7 +65,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
 
   const [sendingEmail, setSendingEmail] = useState(false);
-  const [currentHeroImage, setCurrentHeroImage] = useState(backgroundImages[0]);
+  const [currentHeroImage, setCurrentHeroImage] = useState(
+    BACKGROUND_IMAGES[0],
+  );
   const [openPricingModal, setOpenPricingModal] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showRecommendation, setShowRecommendation] = useState(false);
@@ -70,7 +76,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [scrollToRecommendation, setScrollToRecommendation] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState("personal-gym-30");
 
-  // form update logic
+  // Preload all background images
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = BACKGROUND_IMAGES.map((src) => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+      });
+
+      try {
+        await Promise.all(imagePromises);
+        setImagesLoaded(true);
+      } catch (error) {
+        console.error("Error preloading images:", error);
+        // Still set to true to not block the UI
+        setImagesLoaded(true);
+      }
+    };
+
+    preloadImages();
+  }, []);
+
+  // Optimized form update logic - no dependency on backgroundImages
   const updateFormField = useCallback(
     (field: keyof HeroFormData, value: string) => {
       setFormData((prev) => ({
@@ -79,37 +110,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }));
 
       setCurrentFormIndex((prev) => {
-        const nextIndex = Math.min(prev + 1, backgroundImages.length);
+        const nextIndex = Math.min(prev + 1, BACKGROUND_IMAGES.length);
         if (nextIndex <= 3) {
-          setCurrentHeroImage(backgroundImages[nextIndex]);
+          setCurrentHeroImage(BACKGROUND_IMAGES[nextIndex]);
         }
-
         return nextIndex;
       });
     },
-    [backgroundImages],
+    [], // No dependencies needed
   );
-
-  // useEffect(() => {
-  //   if (formData.d !== "") {
-  //     const sectionId =
-  //       formData.d === "Ja, ich will meinen PEAK erreichen!"
-  //         ? "pricing"
-  //         : "contact";
-
-  //     if (!hasCompletedForm) {
-  //       document.getElementById(sectionId)?.scrollIntoView({
-  //         behavior: "smooth",
-  //       });
-  //       setHasCompletedForm(true);
-  //     }
-  //   }
-  // }, [formData]);
 
   return (
     <AppContext.Provider
       value={{
-        backgroundImages,
+        backgroundImages: BACKGROUND_IMAGES,
         currentHeroImage,
         currentFormIndex,
         hasCompletedForm,
@@ -134,6 +148,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setHideRecommendationBox,
         scrollToRecommendation,
         setScrollToRecommendation,
+        imagesLoaded,
       }}
     >
       {children}

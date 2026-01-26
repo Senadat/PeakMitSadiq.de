@@ -23,8 +23,8 @@ export default function RecommendationContent({
       </p>
       <p>
         Mit deiner Altersgruppe{" "}
-        <span className="font-bold text-primary">{age_group}</span> ist es
-        besonders sinnvoll, den Fokus auf{" "}
+        <span className="font-bold text-primary">{`(${age_group})`}</span> ist
+        es besonders sinnvoll, den Fokus auf{" "}
         <span className="font-bold text-primary">{focus}</span> zu legen.
         <br></br>
         <span className="font-bold text-primary">{justification}</span>

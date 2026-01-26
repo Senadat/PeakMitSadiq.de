@@ -13,38 +13,37 @@ export default function Hero() {
     showRecommendation,
     scrollToRecommendation,
     setScrollToRecommendation,
+    imagesLoaded,
   } = useApp();
   const isEmailCollected = hasCompletedForm && showRecommendation;
 
   useEffect(() => {
-    if (isEmailCollected) {
-      if (!scrollToRecommendation) {
-        scrollToId("recommendation");
-        setScrollToRecommendation(true);
-      }
+    if (isEmailCollected && !scrollToRecommendation) {
+      scrollToId("recommendation");
+      setScrollToRecommendation(true);
     }
-  }, [isEmailCollected]);
+  }, [isEmailCollected, scrollToRecommendation, setScrollToRecommendation]);
 
   return (
-    <div
-      id="hero"
-      // style={{
-      //   opacity: showRecommendation ? 0.2 : 1,
-      //   transition: "opacity 300ms ease",
-      // }}
-
-      className="w-full min-h-screen relative overflow-hidden "
-    >
-      {/* Background images with fade transition */}
+    <div id="hero" className="w-full min-h-screen relative overflow-hidden">
+      {/* Background images with faster transition */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentHeroImage}
-          className="absolute inset-0 bg-cover bg-center bg-fill"
-          style={{ backgroundImage: `url(${currentHeroImage})` }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${currentHeroImage})`,
+            // Improve rendering performance
+            willChange: "opacity",
+            backfaceVisibility: "hidden",
+          }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: imagesLoaded ? 1 : 0 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
+          transition={{
+            duration: 0.5, // Reduced from 1s
+            ease: "easeInOut",
+          }}
         />
       </AnimatePresence>
 
@@ -71,7 +70,7 @@ export default function Hero() {
         </div>
       ) : (
         <div className="relative z-10 w-full min-h-screen flex flex-col lg:flex-row items-center justify-center gap-6 py-10 px-10 lg:px-20 text-center">
-          <div className="flex flex-col lg:flex-row items-center  justify-center lg:justify-between gap-8 w-full">
+          <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-8 w-full">
             <h1
               style={{
                 fontSize: "8.5vw",
@@ -92,8 +91,8 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.4 }}
-                  className="lg:w-[calc(50%-16px)] flex items-center justify-center flex-none w-[90%] "
+                  transition={{ duration: 0.3 }} // Reduced from 0.4
+                  className="lg:w-[calc(50%-16px)] flex items-center justify-center flex-none w-[90%]"
                 >
                   <HeroForm />
                 </motion.div>
@@ -103,7 +102,7 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.4 }}
+                  transition={{ duration: 0.3 }}
                   className="max-w-xl"
                 >
                   <p className="text-xl md:text-2xl font-semibold text-white">

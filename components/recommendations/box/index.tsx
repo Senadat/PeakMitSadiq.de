@@ -76,6 +76,9 @@ export default function RecommendationBox({
             hover:scale-105 hover:shadow-lg
             active:scale-95
             focus:outline-none focus:ring-2 focus:ring-primary/40
+             min-w-fit
+          w-1/2
+          max-w-75
           "
         >
           Kontaktiere mich
@@ -84,6 +87,9 @@ export default function RecommendationBox({
         <button
           onClick={handleBackToRecommendation}
           className="
+          min-w-fit
+          w-1/2
+          max-w-75
             rounded-md
             text-[clamp(14px,1.4vw,28px)]
             bg-transparent border-2 border-primary text-primary

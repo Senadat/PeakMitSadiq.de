@@ -33,9 +33,6 @@ export default function LegalPage() {
           </h2>
           <ul className="text-sm sm:text-base space-y-1">
             <li>Sadiq Ajagbe</li>
-            <li>Rudolfstr. 13</li>
-            <li>58638 Iserlohn</li>
-            <li>Deutschland</li>
             <li>
               Diese Website wurde erstellt von{" "}
               <a
