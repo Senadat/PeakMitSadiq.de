@@ -183,7 +183,7 @@ export async function POST(req: Request) {
     }
 
     await resend.emails.send({
-      from: "Contact Form <onboarding@resend.dev>",
+      from: "Contact Form <info@peakmitsadiq.de>",
       to: [resendEmail],
       subject: `Neue ${isBooking ? "Buchung" : "Nachricht"} von ${name}`,
       replyTo: email,
