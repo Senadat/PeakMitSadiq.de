@@ -340,10 +340,7 @@ export default function BookingPayment() {
     );
   }
 
-  const formattedPrice = new Intl.NumberFormat("de-DE", {
-    style: "currency",
-    currency: "EUR",
-  }).format(selectedPackage?.price);
+  const formattedPrice = selectedPackage.price;
 
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-y-auto bg-background">

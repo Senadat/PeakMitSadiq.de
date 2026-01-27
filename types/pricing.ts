@@ -1,6 +1,6 @@
 export interface PricingCardType {
   id: string;
-  price: number;
+  price: number | string;
   package: string;
   plan: PricingPlan;
   features: string[];

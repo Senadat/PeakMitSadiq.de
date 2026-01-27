@@ -113,7 +113,7 @@ export const gymOptions: PricingCardType[] = [
 export const personalOptions: PricingCardType[] = [
   {
     id: "personal-gym-60",
-    price: 71.4,
+    price: (71.4).toFixed(2),
     package: `1:1 Personal Training
 Studio
 (60 Minuten)`,
@@ -127,7 +127,7 @@ Studio
   },
   {
     id: "personal-home-60",
-    price: 99.4,
+    price: (99.4).toFixed(2),
     package: `1:1 Personal Training
 Zuhause / Outdoor
 (60 Minuten)`,
