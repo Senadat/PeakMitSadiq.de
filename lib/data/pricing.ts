@@ -4,7 +4,7 @@ export const homeOptions: PricingCardType[] = [
   {
     id: "home-muscle-gain",
     price: 1700,
-    package: "Peak Muscle Gain Home",
+    package: "Peak Muscle Gain Home (Dauert 3 Monate)",
     plan: "home",
     features: [
       "24 Einheiten Personal Training (60 Min.) bei dir zu Hause oder outdoor",
@@ -22,7 +22,7 @@ export const homeOptions: PricingCardType[] = [
   {
     id: "home-pain-free",
     price: 1700,
-    package: "PeakPainFree Home",
+    package: "PeakPainFree Home (Dauert 3 Monate)",
     plan: "home",
     duration: 60,
     features: [
@@ -41,7 +41,7 @@ export const homeOptions: PricingCardType[] = [
   {
     id: "home-weight-loss",
     price: 1700,
-    package: "Peak Weight Loss Home",
+    package: "Peak Weight Loss Home (Dauert 3 Monate)",
     plan: "home",
     features: [
       "24 Einheiten Personal Training (60 Min.) zu Hause oder outdoor",
@@ -62,7 +62,7 @@ export const gymOptions: PricingCardType[] = [
   {
     id: "gym-muscle-gain",
     price: 1500,
-    package: "Peak Muscle Gain Gym",
+    package: "Peak Muscle Gain Gym (Dauert 3 Monate)",
     plan: "gym",
     duration: 60,
     features: [
@@ -78,7 +78,7 @@ export const gymOptions: PricingCardType[] = [
   {
     id: "gym-pain-free",
     price: 1500,
-    package: "PeakPainFree Gym",
+    package: "PeakPainFree Gym (Dauert 3 Monate)",
     plan: "gym",
     duration: 60,
     features: [
@@ -95,7 +95,7 @@ export const gymOptions: PricingCardType[] = [
   {
     id: "gym-weight-loss",
     price: 1500,
-    package: "Peak Weight Loss Gym",
+    package: "Peak Weight Loss Gym (Dauert 3 Monate)",
     plan: "gym",
     duration: 60,
     features: [
