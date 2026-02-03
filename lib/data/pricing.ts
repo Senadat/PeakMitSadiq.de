@@ -22,7 +22,7 @@ export const homeOptions: PricingCardType[] = [
   {
     id: "home-pain-free",
     price: 1700,
-    package: "PeakPainFree Home (Dauert 3 Monate)",
+    package: "Peak Pain Free Home (Dauert 3 Monate)",
     plan: "home",
     duration: 60,
     features: [
@@ -78,7 +78,7 @@ export const gymOptions: PricingCardType[] = [
   {
     id: "gym-pain-free",
     price: 1500,
-    package: "PeakPainFree Gym (Dauert 3 Monate)",
+    package: "Peak Pain Free Gym (Dauert 3 Monate)",
     plan: "gym",
     duration: 60,
     features: [
