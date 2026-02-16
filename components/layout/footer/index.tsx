@@ -6,11 +6,11 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const socials = [
-    // {
-    //   title: "facebook",
-    //   icon: <Image src={"/facebook.svg"} alt="facebook icon" fill />,
-    //   link: `#`,
-    // },
+    {
+      title: "facebook",
+      icon: <Image src={"/facebook.svg"} alt="facebook icon" fill />,
+      link: `https://www.facebook.com/share/1C663Q2U2t/?mibextid=wwXIfr`,
+    },
     {
       title: "instagram",
       icon: <Image src={"/instagram.svg"} alt="instagram icon" fill />,
@@ -26,6 +26,11 @@ export default function Footer() {
     //   icon: <Image src={"/twitter.svg"} alt="x icon" fill />,
     //   link: `#`,
     // },
+    {
+      title: "tiktok",
+      icon: <Image src={"/tiktok.svg"} alt="tiktok icon" fill />,
+      link: `https://www.tiktok.com/@peakmitsadiq?_r=1&_t=ZG-93fk6pAiWLh`,
+    },
   ];
 
   return (
